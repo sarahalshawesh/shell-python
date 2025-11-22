@@ -3,7 +3,7 @@ import sys
 
 def main():
     sys.stdout.write("$ ")
-    user_input = sys.stdin
+    user_input = sys.stdin.readlines()
     sys.exit(f"{user_input}: command not found")
     pass
 
