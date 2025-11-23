@@ -2,15 +2,15 @@ import sys
 
 
 def main():
-    flag = True
-    while flag:
+    while True:
         sys.stdout.write("$ ")
         sys.stdout.flush()
         user_input = sys.stdin.readline().strip()
-        sys.stdout.write(f"{user_input}: command not found\n")
+        print(user_input)
         if "exit" in user_input:
-            sys.exit()
-            flag = False
+            exit(0)
+        sys.stdout.write(f"{user_input}: command not found\n")
+        
 
 
 
