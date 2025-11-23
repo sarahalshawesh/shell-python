@@ -10,7 +10,7 @@ def echo_command(input, commands):
 def type_command(input, commands):
     command = input.split()[0]
     if command in commands:
-        print(f"{command}is a shell builtin")
+        print(f"{command} is a shell builtin")
     else: 
         print(f"{command}: command not found\n")
 
