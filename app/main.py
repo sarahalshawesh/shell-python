@@ -8,8 +8,13 @@ def main():
         user_input = sys.stdin.readline().strip()
         if "exit" in user_input:
             exit(0)
-        sys.stdout.write(f"{user_input}: command not found\n")
-        
+        elif "echo" in user_input:
+            print(user_input[1:])
+        else:
+            sys.stdout.write(f"{user_input}: command not found\n")
+
+
+
 
 
 
