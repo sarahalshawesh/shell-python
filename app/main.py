@@ -3,6 +3,13 @@ import sys
 
 def main():
 
+    def exit_command(input):
+        if input.startswith("type exit"):
+            print("exit is a shell builtin")
+        else:
+            exit(0)
+        return
+
     def echo(input):
         if input.startswith("type echo"):
             print("echo is a shell builtin")
@@ -17,7 +24,7 @@ def main():
         
 
         if "exit" in user_input:
-            exit(0)
+            exit_command(user_input)
         elif "echo" in user_input:
             echo(user_input) 
         else:
