@@ -5,10 +5,10 @@ def main():
     while True:
         sys.stdout.write("$ ")
         sys.stdout.flush()
-        user_input = input().split()
+        user_input = input()
         if "exit" in user_input:
             exit(0)
-        elif "echo" in user_input:
+        elif user_input.startswith("echo"):
             print(user_input[5:])
         else:
             sys.stdout.write(f"{user_input}: command not found\n")
