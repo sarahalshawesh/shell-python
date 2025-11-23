@@ -1,8 +1,8 @@
 import sys
-
+import os
 
 def exit_command(input):
-    exit(0)
+    os.exit(0)
 
 def echo_command(input):
     print(input[5:])
