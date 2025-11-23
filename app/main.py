@@ -12,7 +12,7 @@ def type_command(input, commands):
     if command in commands:
         print(f"{command} is a shell builtin")
     else: 
-        print(f"{command}: command not found\n")
+        print(f"{command}: not found\n")
 
 commands = {
     "exit" : exit_command,
