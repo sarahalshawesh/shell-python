@@ -1,20 +1,24 @@
 import sys
 
-commands = {
-    "exit" : exit(0),
-    "echo": echo(input),
-    "type": type(input)
-}
 
-def echo(input):
+def exit_command():
+    exit(0)
+
+def echo_command(input):
     print(input[5:])
 
-def type(input, commands):
-    for command in commands:
-        if command in commands:
-            print(f"{command}is a shell builtin")
-        else: 
-            print(f"{command}: command not found\n")
+def type_command(input, commands):
+    command = input.split()[0]
+    if command in commands:
+        print(f"{command}is a shell builtin")
+    else: 
+        print(f"{command}: command not found\n")
+
+commands = {
+    "exit" : exit_command,
+    "echo": echo_command,
+    "type": type_command
+}
 
 def main():
 
@@ -25,7 +29,7 @@ def main():
         command = user_input.split()[0]
 
         if command in commands:
-            commands[command]()
+            commands[command](user_input)
         else:
             sys.stdout.write(f"{user_input}: command not found\n")
 
