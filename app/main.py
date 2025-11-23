@@ -1,10 +1,10 @@
 import sys
 import os
 
-def exit_command(input):
+def exit_command(input, commands):
     os.exit(0)
 
-def echo_command(input):
+def echo_command(input, commands):
     print(input[5:])
 
 def type_command(input, commands):
@@ -29,7 +29,7 @@ def main():
         command = user_input.split()[0]
 
         if command in commands:
-            commands[command](user_input)
+            commands[command](user_input, commands)
         else:
             sys.stdout.write(f"{user_input}: command not found\n")
 
