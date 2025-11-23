@@ -1,7 +1,7 @@
 import sys
 
 
-def exit_command():
+def exit_command(input):
     exit(0)
 
 def echo_command(input):
