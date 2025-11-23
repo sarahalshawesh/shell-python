@@ -6,7 +6,6 @@ def main():
         sys.stdout.write("$ ")
         sys.stdout.flush()
         user_input = sys.stdin.readline().strip()
-        print(user_input)
         if "exit" in user_input:
             exit(0)
         sys.stdout.write(f"{user_input}: command not found\n")
