@@ -5,7 +5,7 @@ def main():
     while True:
         sys.stdout.write("$ ")
         sys.stdout.flush()
-        user_input = sys.stdin.readline().strip()
+        user_input = input()
         if "exit" in user_input:
             exit(0)
         elif "echo" in user_input:
