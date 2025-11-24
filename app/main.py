@@ -7,7 +7,7 @@ def echo_command(args):
     print(args)
 
 def type_command(args):
-    command = args.split()[0]
+    command = args[0]
     if command in commands:
         print(f"{command} is a shell builtin")
         return
