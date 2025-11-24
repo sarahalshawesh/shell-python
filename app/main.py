@@ -10,16 +10,16 @@ def type_command(args):
     command = args.split()[0]
     if command in commands:
         print(f"{command} is a shell builtin")
-    elif command not in commands:
+        return
+    if command not in commands:
         paths = os.environ.get("PATH").split(":")
         for i in paths:
             filename = f"{i}/{command}"
             if os.path.isfile(filename) and os.access(filename, os.X_OK):
                 print(f"{command} is {filename}") 
-            elif not os.path.isfile(filename):
-                print("nope")
-    else: 
-        print(f"{command}: not found")
+                return
+     
+    print(f"{command}: not found")
 
 commands = {
     "exit" : exit_command,
