@@ -46,8 +46,9 @@ def main():
                 filename = f"{i}/{command}"
                 if os.path.isfile(filename) and os.access(filename, os.X_OK):
                     subprocess.run(user_input)
-                else:
-                    sys.stdout.write(f"{command}: command not found\n")
+                    break
+            else:
+                sys.stdout.write(f"{command}: command not found\n")
 
 
 
