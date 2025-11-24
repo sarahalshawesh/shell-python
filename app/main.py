@@ -4,7 +4,7 @@ def exit_command(args):
     exit(0)
 
 def echo_command(args):
-    print(args)
+    print(args[5:])
 
 def type_command(args):
     command = args
