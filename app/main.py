@@ -16,7 +16,7 @@ def type_command(args):
             filename = f"{i}/{command}"
             if os.path.isfile(filename) and os.access(filename, os.X_OK):
                 print(f"{command} is {filename}") 
-            else:
+            elif not os.path.isfile(filename):
                 print("nope")
     else: 
         print(f"{command}: not found")
