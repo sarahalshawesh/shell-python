@@ -1,4 +1,4 @@
-import sys, os
+import sys, os, subprocess
 
 def exit_command(args):
     exit(0)
@@ -35,8 +35,16 @@ def main():
         user_input = sys.stdin.readline().strip()
         command = user_input.split()[0]
         args = user_input.split()[1:]
+
         if command in commands:
             commands[command](args)
+
+        if command not in commands:
+            paths = os.environ.get("PATH").split(":")
+            for i in paths:
+                filename = f"{i}/{command}"
+                if os.path.isfile(filename) and os.access(filename, os.X_OK):
+                    subprocess.run(command, args[0], args[1])
         else:
             sys.stdout.write(f"{command}: command not found\n")
 
