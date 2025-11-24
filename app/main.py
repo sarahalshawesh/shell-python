@@ -4,10 +4,10 @@ def exit_command(args):
     exit(0)
 
 def echo_command(args):
-    print(args[5:])
+    print(args)
 
 def type_command(args):
-    command = args
+    command = args[0]
     if command in commands:
         print(f"{command} is a shell builtin")
         return
