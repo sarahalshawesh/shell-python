@@ -13,9 +13,9 @@ def type_command(args):
     elif command not in commands:
         paths = os.environ.get("PATH").split(":")
         for i in paths:
-            if os.path.isfile(f"{i}/{command}"):
-                print(f"{command} is {i}/{command}")
-            
+            filename = f"{i}/{command}"
+            if os.path.isfile(filename) and os.access(filename, os.X_OK):
+                print(f"{command} is {filename}") 
     else: 
         print(f"{command}: not found")
 
