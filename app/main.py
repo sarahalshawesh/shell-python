@@ -4,7 +4,7 @@ def exit_command(args):
     exit(0)
 
 def echo_command(args):
-    print(args[5:])
+    print(args)
 
 def type_command(args):
     command = args.split()[0]
@@ -35,7 +35,7 @@ def main():
         if command in commands:
             commands[command](args)
         else:
-            sys.stdout.write(f"{user_input}: command not found\n")
+            sys.stdout.write(f"{command}: command not found\n")
 
 
 
