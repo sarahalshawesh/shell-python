@@ -33,7 +33,8 @@ def main():
         sys.stdout.write("$ ")
         sys.stdout.flush()
         user_input = sys.stdin.readline().strip()
-        command, args = user_input.split()
+        command = user_input.split()[0]
+        args = user_input.split()[1:]
         if command in commands:
             commands[command](args)
         else:
