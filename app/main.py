@@ -44,7 +44,7 @@ def main():
             for i in paths:
                 filename = f"{i}/{command}"
                 if os.path.isfile(filename) and os.access(filename, os.X_OK):
-                    subprocess.run([command, args[0], args[1]])
+                    subprocess.run(user_input.split())
         else:
             sys.stdout.write(f"{command}: command not found\n")
 
