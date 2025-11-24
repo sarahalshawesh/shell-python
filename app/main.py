@@ -39,12 +39,12 @@ def main():
         if command in commands:
             commands[command](args)
 
-        if command not in commands:
+        elif command not in commands:
             paths = os.environ.get("PATH").split(":")
             for i in paths:
                 filename = f"{i}/{command}"
                 if os.path.isfile(filename) and os.access(filename, os.X_OK):
-                    subprocess.run(command, args[0], args[1])
+                    subprocess.run([command, args[0], args[1]])
         else:
             sys.stdout.write(f"{command}: command not found\n")
 
