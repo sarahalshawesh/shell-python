@@ -18,6 +18,8 @@ def type_command(args):
                 print(f"{command} is {filename}") 
             else: 
                 print(f"{command}: not found")
+    else: 
+        print(f"{command}: not found")
 
 commands = {
     "exit" : exit_command,
