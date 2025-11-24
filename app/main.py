@@ -14,7 +14,7 @@ def type_command(args):
         paths = os.environ.get("PATH").split(":")
         for i in paths:
             if os.path.isfile(f"{i}/{command}"):
-                print(f"{command} is {i}")
+                print(f"{command} is {i}/{command}")
             
     else: 
         print(f"{command}: not found")
