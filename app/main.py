@@ -28,7 +28,8 @@ def pwd_command(args):
 def cd_command(args):
     dir_path = args[0]
     if dir_path == "~":
-        os.chdir("/home/user")
+        home_path = os.getenv("HOME")
+        os.chdir(home_path)
     elif os.path.exists(dir_path):
         os.chdir(dir_path)
     else:
