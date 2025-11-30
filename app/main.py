@@ -23,7 +23,7 @@ def type_command(args):
     print(f"{command}: not found")
 
 def pwd_command(args):
-    pass
+    print(os.getcwd())
 
 commands = {
     "exit" : exit_command,
