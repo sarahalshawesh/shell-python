@@ -25,11 +25,19 @@ def type_command(args):
 def pwd_command(args):
     print(os.getcwd())
 
+def cd_command(args):
+    dir_path = args
+    if os.path.isdir(dir_path):
+        os.chdir(dir_path)
+    else:
+        print(f"cd: {dir_path}: No such file or directory")
+
 commands = {
     "exit" : exit_command,
     "echo": echo_command,
     "type": type_command,
-    "pwd": pwd_command
+    "pwd": pwd_command,
+    "cd": cd_command
 }
 
 def main():
