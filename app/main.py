@@ -22,10 +22,14 @@ def type_command(args):
      
     print(f"{command}: not found")
 
+def pwd_command(args):
+    pass
+
 commands = {
     "exit" : exit_command,
     "echo": echo_command,
-    "type": type_command
+    "type": type_command,
+    "pwd": pwd_command
 }
 
 def main():
