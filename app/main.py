@@ -26,7 +26,7 @@ def pwd_command(args):
     print(os.getcwd())
 
 def cd_command(args):
-    dir_path = args
+    dir_path = args[0]
     print(dir_path)
     # if os.path.exists(dir_path):
     #     os.chdir(dir_path)
