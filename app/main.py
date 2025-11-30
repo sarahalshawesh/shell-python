@@ -28,7 +28,7 @@ def pwd_command(args):
 def cd_command(args):
     dir_path = args
     print(dir_path)
-    if os.path.isdir(dir_path):
+    if os.path.exists(dir_path):
         os.chdir(dir_path)
     else:
         print(f"cd: {dir_path}: No such file or directory")
