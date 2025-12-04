@@ -5,7 +5,11 @@ def exit_command(args):
     exit(0)
 
 def echo_command(args):
-    print(" ".join(args))
+    str_args = " ".join(args)
+    if "'" in str_args:
+        pass
+    else:
+        print(str_args.split().strip())
 
 def type_command(args):
     command = args[0]
