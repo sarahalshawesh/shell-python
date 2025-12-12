@@ -1,15 +1,11 @@
-import sys, os, subprocess
+import sys, os, subprocess, shlex
 
 
 def exit_command(args):
     exit(0)
 
 def echo_command(args):
-    str_args = " ".join(args)
-    if "'" in str_args:
-        pass
-    else:
-        print(str_args.split().strip())
+    print(" ".join(args))
 
 def type_command(args):
     command = args[0]
@@ -52,10 +48,9 @@ def main():
     while True:
         sys.stdout.write("$ ")
         sys.stdout.flush()
-        user_input = sys.stdin.readline().strip().split()
-
-        command = user_input[0]
-        args = user_input[1:]
+        lines = sys.stdin.readline()
+        user_input = shlex.split(lines)
+        command, args = user_input[0], user_input[1:]
 
         if command in commands:
             commands[command](args)
