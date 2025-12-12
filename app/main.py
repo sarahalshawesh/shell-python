@@ -26,14 +26,18 @@ def pwd_command(args):
     print(os.getcwd())
 
 def cd_command(args):
-    dir_path = args[0]
-    if dir_path == "~":
-        home_path = os.getenv("HOME")
+    home_path = os.getenv("HOME")
+    if not args:
         os.chdir(home_path)
-    elif os.path.exists(dir_path):
-        os.chdir(dir_path)
+        return
     else:
-        print(f"cd: {dir_path}: No such file or directory")
+        dir_path = args[0]
+        if dir_path == "~":
+            os.chdir(home_path)
+        elif os.path.exists(dir_path):
+            os.chdir(dir_path)
+        else:
+            print(f"cd: {dir_path}: No such file or directory")
 
 commands = {
     "exit" : exit_command,
