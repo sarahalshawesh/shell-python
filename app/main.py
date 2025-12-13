@@ -56,9 +56,13 @@ def main():
         user_input = shlex.split(lines)
         command, args = user_input[0], user_input[1:]
 
-        if command in commands:
+        if command in commands and not '>' in args:
             commands[command](args)
-
+        elif command in commands and '>' in args:
+            i = user_input.index('>')
+            file_path = args[i + 2:]
+            with open(file_path, 'w') as file:
+                file.write(commands[command](args))
         else:
             paths = os.environ.get("PATH").split(":")
             for i in paths:
