@@ -62,7 +62,7 @@ def main():
             i = user_input.index('>')
             file_path = args[i + 2:]
             with open(file_path, 'w') as file:
-                file.write(commands[command](args))
+                file.write(commands[command](args[:i]))
         else:
             paths = os.environ.get("PATH").split(":")
             for i in paths:
