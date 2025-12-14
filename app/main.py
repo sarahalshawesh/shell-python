@@ -72,14 +72,21 @@ def main():
                 print(e)
 
         else:
-            paths = os.environ.get("PATH").split(":")
-            for i in paths:
-                filename = f"{i}/{command}"
-                if os.path.isfile(filename) and os.access(filename, os.X_OK):
-                    subprocess.run(user_input)
-                    break
+            if '>' in args:
+                i = user_input.index('>')
+                file_path = user_input[i + 1]
+                actions = user_input[:i]
+                with open(file_path, 'w') as file:
+                    file.write(subprocess.run(actions))
             else:
-                sys.stdout.write(f"{command}: command not found\n")
+                paths = os.environ.get("PATH").split(":")
+                for j in paths:
+                    filename = f"{j}/{command}"
+                    if os.path.isfile(filename) and os.access(filename, os.X_OK):
+                        subprocess.run(user_input)
+                        break
+                else:
+                    sys.stdout.write(f"{command}: command not found\n")
 
 
 
