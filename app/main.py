@@ -5,25 +5,26 @@ def exit_command(args):
     exit(0)
 
 def echo_command(args):
-    print(" ".join(args))
+    return " ".join(args)
 
 def type_command(args):
-    command = args[0]
-    if command in commands:
-        print(f"{command} is a shell builtin")
-        return
-    if command not in commands:
-        paths = os.environ.get("PATH").split(":")
-        for i in paths:
-            filename = f"{i}/{command}"
+    if result is not None:
+        command = args[0]
+        if command in commands:
+            print(f"{command} is a shell builtin")
+            return
+        if command not in commands:
+            paths = os.environ.get("PATH").split(":")
+            for i in paths:
+                filename = f"{i}/{command}"
             if os.path.isfile(filename) and os.access(filename, os.X_OK):
                 print(f"{command} is {filename}") 
-                return
+            return
      
-    print(f"{command}: not found")
+    return f"{command}: not found"
 
 def pwd_command(args):
-    print(os.getcwd())
+    return os.getcwd()
 
 def cd_command(args):
     home_path = os.getenv("HOME")
@@ -37,7 +38,7 @@ def cd_command(args):
         elif os.path.exists(dir_path):
             os.chdir(dir_path)
         else:
-            print(f"cd: {dir_path}: No such file or directory")
+            return f"cd: {dir_path}: No such file or directory"
 
 commands = {
     "exit" : exit_command,
@@ -56,13 +57,17 @@ def main():
         user_input = shlex.split(lines)
         command, args = user_input[0], user_input[1:]
 
+
         if command in commands and not '>' in args:
-            commands[command](args)
+            print(commands[command](args))
+
         elif command in commands and '>' in args:
             i = user_input.index('>')
-            file_path = args[i + 2:]
+            output = commands[command](user_input[1:i]) 
+            file_path = user_input[i + 1]
             with open(file_path, 'w') as file:
-                file.write(commands[command](args[:i]))
+                file.write(str(output))
+                print(output)
         else:
             paths = os.environ.get("PATH").split(":")
             for i in paths:
