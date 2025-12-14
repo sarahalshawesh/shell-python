@@ -8,18 +8,18 @@ def echo_command(args):
     return " ".join(args)
 
 def type_command(args):
-    if result is not None:
-        command = args[0]
-        if command in commands:
-            print(f"{command} is a shell builtin")
-            return
-        if command not in commands:
-            paths = os.environ.get("PATH").split(":")
-            for i in paths:
-                filename = f"{i}/{command}"
-            if os.path.isfile(filename) and os.access(filename, os.X_OK):
-                print(f"{command} is {filename}") 
-            return
+    
+    command = args[0]
+    if command in commands:
+        print(f"{command} is a shell builtin")
+        return
+    if command not in commands:
+        paths = os.environ.get("PATH").split(":")
+        for i in paths:
+            filename = f"{i}/{command}"
+        if os.path.isfile(filename) and os.access(filename, os.X_OK):
+            print(f"{command} is {filename}") 
+        return
      
     return f"{command}: not found"
 
@@ -63,11 +63,14 @@ def main():
 
         elif command in commands and '>' in args:
             i = user_input.index('>')
-            output = commands[command](user_input[1:i]) 
-            file_path = user_input[i + 1]
-            with open(file_path, 'w') as file:
-                file.write(str(output))
-                print(output)
+            try:
+                output = commands[command](user_input[1:i]) 
+                file_path = user_input[i + 1]
+                with open(file_path, 'w') as file:
+                    file.write(str(output))
+            except Exception as e:
+                print(e)
+
         else:
             paths = os.environ.get("PATH").split(":")
             for i in paths:
