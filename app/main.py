@@ -77,7 +77,7 @@ def main():
                 file_path = user_input[i + 1]
                 actions = user_input[:i]
                 with open(file_path, 'w') as file:
-                    file.write(subprocess.run(actions))
+                    file.write(str(subprocess.run(actions)))
             else:
                 paths = os.environ.get("PATH").split(":")
                 for j in paths:
