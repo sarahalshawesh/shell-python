@@ -75,9 +75,9 @@ def main():
             if '>' in args:
                 i = user_input.index('>')
                 file_path = user_input[i + 1]
-                actions = user_input[:i - 1]
+                actions = user_input[:i]
                 with open(file_path, 'w') as file:
-                    file.write(str(subprocess.run(actions)))
+                    output = subprocess.run(actions, stdout = file)
             else:
                 paths = os.environ.get("PATH").split(":")
                 for j in paths:
