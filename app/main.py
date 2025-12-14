@@ -57,12 +57,17 @@ def main():
         user_input = shlex.split(lines)
         command, args = user_input[0], user_input[1:]
 
+        redirect = None
+        if '>' in user_input:
+            redirect = '>'
+        elif '1>' in user_input:
+            redirect = '1>'
 
-        if command in commands and not '>' in args:
+        if command in commands and not redirect in user_input:
             print(commands[command](args))
 
-        elif command in commands and '>' in args:
-            i = user_input.index('>')
+        elif command in commands and redirect in user_input:
+            i = user_input.index(redirect)
             try:
                 output = commands[command](user_input[1:i]) 
                 file_path = user_input[i + 1]
@@ -72,7 +77,7 @@ def main():
                 print(e)
 
         else:
-            if '>' in args:
+            if redirect in args:
                 i = user_input.index('>')
                 file_path = user_input[i + 1]
                 actions = user_input[:i]
