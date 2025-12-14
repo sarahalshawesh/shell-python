@@ -51,7 +51,7 @@ commands = {
 def main():
 
     while True:
-        sys.stdout.write("$ ")
+        sys.stdout.write("\n$ ")
         sys.stdout.flush()
         lines = sys.stdin.readline()
         user_input = shlex.split(lines)
