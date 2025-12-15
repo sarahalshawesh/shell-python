@@ -50,8 +50,8 @@ commands = {
 def main():
 
     while True:
-        sys.stdout.write("$ ")
-        sys.stdout.flush()
+        sys.stderr.write("$ ")
+        sys.stderr.flush()
         lines = sys.stdin.readline()
         user_input = shlex.split(lines)
         command, args = user_input[0], user_input[1:]
@@ -77,7 +77,7 @@ def main():
 
         else:
             if redirect:
-                i = user_input.index('>')
+                i = user_input.index(redirect)
                 file_path = user_input[i + 1]
                 actions = user_input[:i]
                 with open(file_path, 'w') as file:
