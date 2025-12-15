@@ -50,8 +50,9 @@ def main():
 
 
     while True:
-        sys.stderr.write("$ ")
-        sys.stderr.flush()
+        sys.stdout = sys.__stdout__
+        sys.stdout.write("$ ")
+        sys.stdout.flush()
         lines = sys.stdin.readline()
         user_input = shlex.split(lines)
         command, args = user_input[0], user_input[1:]
