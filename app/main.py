@@ -2,6 +2,7 @@ import sys, os, subprocess, shlex
 
 
 def exit_command(args):
+    sys.stdout.flush() 
     sys.exit(0)
 
 def echo_command(args):
@@ -77,7 +78,7 @@ def main():
                 print(e)
 
         else:
-            if redirect in args:
+            if redirect:
                 i = user_input.index('>')
                 file_path = user_input[i + 1]
                 actions = user_input[:i]
@@ -92,8 +93,9 @@ def main():
                         break
                 else:
                     sys.stdout.write(f"{command}: command not found\n")
-            if command != "exit":
-                sys.stdout.write("\n")
+                    
+        if command != "exit":
+            sys.stdout.write("\n")
 
 
 
