@@ -63,7 +63,9 @@ def main():
             redirect = '1>'
 
         if command in commands and not redirect in user_input:
-            print(commands[command](args))
+            result = commands[command](args)
+            if result is not None:
+                print(result)
 
         elif command in commands and redirect in user_input:
             i = user_input.index(redirect)
