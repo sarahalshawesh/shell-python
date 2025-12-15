@@ -93,9 +93,9 @@ def main():
                         break
                 else:
                     sys.stdout.write(f"{command}: command not found\n")
-                    
+
         if command != "exit":
-            sys.stdout.write("\n")
+            sys.stdout.flush()
 
 
 
