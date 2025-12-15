@@ -49,51 +49,56 @@ commands = {
 
 def main():
 
+
+
     while True:
-        sys.stderr.write("\n$ ")
-        sys.stderr.flush()
-        lines = sys.stdin.readline()
-        user_input = shlex.split(lines)
-        command, args = user_input[0], user_input[1:]
-
-        redirect = None
-        if '>' in user_input:
-            redirect = '>'
-        elif '1>' in user_input:
-            redirect = '1>'
-
-        if command in commands and not redirect in user_input:
-            print(commands[command](args))
-
-        elif command in commands and redirect in user_input:
-            i = user_input.index(redirect)
-            try:
-                output = commands[command](user_input[1:i]) 
-                file_path = user_input[i + 1]
-                with open(file_path, 'w') as file:
-                    file.write(str(output))
-            except Exception as e:
-                print(e)
-
-        else:
-            if redirect:
-                i = user_input.index(redirect)
-                file_path = user_input[i + 1]
-                actions = user_input[:i]
-                with open(file_path, 'w') as file:
-                    output = subprocess.run(actions, stdout = file)
-            else:
-                paths = os.environ.get("PATH").split(":")
-                for j in paths:
-                    filename = f"{j}/{command}"
-                    if os.path.isfile(filename) and os.access(filename, os.X_OK):
-                        subprocess.run(user_input)
-                        break
-                else:
-                    sys.stdout.write(f"{command}: command not found\n")
-
-        if command != "exit":
+        if not sys.stdout.isatty():
+            pass
+       else:
+            sys.stdout.write("$ ")
             sys.stdout.flush()
+            lines = sys.stdin.readline()
+            user_input = shlex.split(lines)
+            command, args = user_input[0], user_input[1:]
+
+            redirect = None
+            if '>' in user_input:
+                redirect = '>'
+            elif '1>' in user_input:
+                redirect = '1>'
+
+            if command in commands and not redirect in user_input:
+                print(commands[command](args))
+
+            elif command in commands and redirect in user_input:
+                i = user_input.index(redirect)
+                try:
+                    output = commands[command](user_input[1:i]) 
+                    file_path = user_input[i + 1]
+                    with open(file_path, 'w') as file:
+                        file.write(str(output))
+                except Exception as e:
+                    print(e)
+
+            else:
+                if redirect:
+                    i = user_input.index(redirect)
+                    file_path = user_input[i + 1]
+                    actions = user_input[:i]
+                    with open(file_path, 'w') as file:
+                        output = subprocess.run(actions, stdout = file)
+                else:
+                    paths = os.environ.get("PATH").split(":")
+                    for j in paths:
+                        filename = f"{j}/{command}"
+                        if os.path.isfile(filename) and os.access(filename, os.X_OK):
+                            subprocess.run(user_input)
+                            break
+                    else:
+                        sys.stdout.write(f"{command}: command not found\n")
+
+            if command != "exit":
+                sys.stdout.flush()
 
 
 
