@@ -50,7 +50,6 @@ def main():
 
 
     while True:
-        sys.stdout = sys.__stdout__
         sys.stdout.write("$ ")
         sys.stdout.flush()
         lines = sys.stdin.readline()
@@ -64,7 +63,7 @@ def main():
             redirect = '1>'
 
         if command in commands and not redirect in user_input:
-            print(commands[command](args))
+            commands[command](args)
 
         elif command in commands and redirect in user_input:
             i = user_input.index(redirect)
