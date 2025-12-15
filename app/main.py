@@ -54,7 +54,7 @@ def main():
     while True:
         if not sys.stdout.isatty():
             pass
-       else:
+        else:
             sys.stdout.write("$ ")
             sys.stdout.flush()
             lines = sys.stdin.readline()
