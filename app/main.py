@@ -2,7 +2,7 @@ import sys, os, subprocess, shlex
 
 
 def exit_command(args):
-    exit(0)
+    sys.exit(0)
 
 def echo_command(args):
     return " ".join(args)
@@ -51,7 +51,7 @@ commands = {
 def main():
 
     while True:
-        sys.stdout.write("$ ")
+        sys.stdout.write("\n$ ")
         sys.stdout.flush()
         lines = sys.stdin.readline()
         user_input = shlex.split(lines)
@@ -92,6 +92,8 @@ def main():
                         break
                 else:
                     sys.stdout.write(f"{command}: command not found\n")
+            if command != "exit":
+                sys.stdout.write("\n")
 
 
 
