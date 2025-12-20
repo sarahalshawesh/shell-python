@@ -76,8 +76,7 @@ def main():
                 with open(file_path, 'w') as file:
                     file.write(str(output) + '\n')
             except Exception as e:
-                print(e)
-
+                pass
         else:
             if redirect:
                 i = user_input.index(redirect)
