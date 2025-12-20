@@ -70,13 +70,14 @@ def main():
 
         elif command in commands and redirect in user_input:
             i = user_input.index(redirect)
-            try:
-                output = commands[command](user_input[1:i]) 
-                file_path = user_input[i + 1]
+            output = commands[command](user_input[1:i]) 
+            file_path = user_input[i + 1]
+            if redirect == '2>':
+                sys.stderr.write()
+            else:
                 with open(file_path, 'w') as file:
                     file.write(str(output) + '\n')
-            except Exception as e:
-                pass
+            
         else:
             if redirect:
                 i = user_input.index(redirect)
