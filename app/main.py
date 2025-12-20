@@ -73,7 +73,7 @@ def main():
             output = commands[command](user_input[1:i]) 
             file_path = user_input[i + 1]
             if redirect == '2>':
-                sys.stderr.write()
+                sys.stderr.write(file_path)
             else:
                 with open(file_path, 'w') as file:
                     file.write(str(output) + '\n')
@@ -83,8 +83,11 @@ def main():
                 i = user_input.index(redirect)
                 file_path = user_input[i + 1]
                 actions = user_input[:i]
-                with open(file_path, 'w') as file:
-                    output = subprocess.run(actions, stdout = file)
+                if redirect == '2>':
+                    sys.stderr.write(file_path)
+                else:
+                    with open(file_path, 'w') as file:
+                        output = subprocess.run(actions, stdout = file)
             else:
                 paths = os.environ.get("PATH").split(":")
                 for j in paths:
