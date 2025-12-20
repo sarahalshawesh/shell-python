@@ -11,8 +11,8 @@ def type_command(args):
     
     command = args[0]
     if command in commands:
-        print(f"{command} is a shell builtin")
-        return
+        return f"{command} is a shell builtin"
+        
     if command not in commands:
         paths = os.environ.get("PATH").split(":")
         for i in paths:
@@ -48,7 +48,6 @@ commands = {
 
 def main():
 
-
     while True:
         sys.stdout.write("$ ")
         sys.stdout.flush()
@@ -61,6 +60,8 @@ def main():
             redirect = '>'
         elif '1>' in user_input:
             redirect = '1>'
+        elif '2>' in user_input:
+            redirect = '2>'
 
         if command in commands and not redirect in user_input:
             result = commands[command](args)
