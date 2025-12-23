@@ -76,7 +76,8 @@ def main():
                 output = commands[command](user_input[1:i])
                 print(output) 
                 if redirect == '2>':
-                    pass
+                    with open(file_path, 'w') as file:
+                        pass
                 else:
                     with open(file_path, 'w') as file:
                         file.write(str(output) + '\n')
