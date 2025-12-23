@@ -62,6 +62,8 @@ def main():
             redirect = '1>'
         elif '2>' in user_input:
             redirect = '2>'
+        elif '>>' in user_input:
+            redirect = '>>'
 
         if command in commands and not redirect in user_input:
             result = commands[command](args)
@@ -78,6 +80,9 @@ def main():
                     print(output)
                     with open(file_path, 'w') as file:
                         pass
+                elif redirect == '>>':
+                    with open(file_path, 'a') as file:
+                        file.write(str(output) + '\n')
                 else:
                     with open(file_path, 'w') as file:
                         file.write(str(output) + '\n')
@@ -96,6 +101,9 @@ def main():
                 if redirect == '2>':
                     with open(file_path, 'w') as file:
                         subprocess.run(actions, stderr=file)
+                elif redirect == '>>':
+                    with open(file_path, 'a') as file:
+                        subprocess.run(actions, stdout=file)
                 else:
                     with open(file_path, 'w') as file:
                         subprocess.run(actions, stdout=file)
