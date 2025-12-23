@@ -62,7 +62,7 @@ def main():
             redirect = '1>'
         elif '2>' in user_input:
             redirect = '2>'
-        elif '>>' in user_input or '1>>' in user_input:
+        elif '1>>' in user_input or '>>' in user_input:
             redirect = '>>'
         
         
