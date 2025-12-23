@@ -71,6 +71,7 @@ def main():
         elif command in commands and redirect in user_input:
             i = user_input.index(redirect)
             output = commands[command](user_input[1:i]) 
+            print(output)
             file_path = user_input[i + 1]
             os.makedirs(os.path.dirname(file_path), exist_ok=True)
             with open(file_path, 'w') as file:
