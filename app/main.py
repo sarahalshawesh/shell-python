@@ -71,12 +71,14 @@ def main():
         elif command in commands and redirect in user_input:
             i = user_input.index(redirect)
             file_path = user_input[i + 1]
+            os.makedirs(os.path.dirname(file_path), exist_ok=True)
             try:
                 output = commands[command](user_input[1:i]) 
-                print(output)
-                os.makedirs(os.path.dirname(file_path), exist_ok=True)
-                with open(file_path, 'w') as file:
-                    file.write(str(output) + '\n')
+                if redirect == '2>':
+                    pass
+                else:
+                    with open(file_path, 'w') as file:
+                        file.write(str(output) + '\n')
             except Exception as e:
                 with open(file_path, 'w') as file:
                     file.write(str(e) + '\n')
