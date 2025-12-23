@@ -77,10 +77,11 @@ def main():
             
         else:
             if redirect:
+                i = user_input.index(redirect)
+                file_path = user_input[i + 1]
+                actions = user_input[:i]
+                os.makedirs(os.path.dirname(file_path), exist_ok=True)
                 try:
-                    i = user_input.index(redirect)
-                    file_path = user_input[i + 1]
-                    actions = user_input[:i]
                     with open(file_path, 'w') as file:
                         subprocess.run(actions, stdout = file)
                 except Exception as e:
