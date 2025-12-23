@@ -62,8 +62,10 @@ def main():
             redirect = '1>'
         elif '2>' in user_input:
             redirect = '2>'
-        elif '>>' in user_input:
+        elif '>>' in user_input or '1>>' in user_input:
             redirect = '>>'
+        
+        
 
         if command in commands and not redirect in user_input:
             result = commands[command](args)
