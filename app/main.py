@@ -72,6 +72,7 @@ def main():
             i = user_input.index(redirect)
             output = commands[command](user_input[1:i]) 
             file_path = user_input[i + 1]
+            os.makedirs(os.path.dirname(file_path), exist_ok=True)
             with open(file_path, 'w') as file:
                 file.write(str(output) + '\n')
             
@@ -83,7 +84,7 @@ def main():
                 os.makedirs(os.path.dirname(file_path), exist_ok=True)
                 try:
                     with open(file_path, 'w') as file:
-                        subprocess.run(actions, stdout = file)
+                        subprocess.run(actions, stdout=file, stderr=file)
                 except Exception as e:
                     with open(file_path, 'w') as file:
                         file.write(str(e))
