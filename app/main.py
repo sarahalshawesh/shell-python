@@ -93,9 +93,13 @@ def main():
                 actions = user_input[:i]
                 os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
-                with open(file_path, 'w') as file:
-                    subprocess.run(actions, stdout=file, stderr=file)
-                
+                if redirect == '2>':
+                    with open(file_path, 'w') as file:
+                        subprocess.run(actions, stderr=file)
+                else:
+                    with open(file_path, 'w') as file:
+                        subprocess.run(actions, stdout=file)
+
             else:
                 paths = os.environ.get("PATH").split(":")
                 for j in paths:
