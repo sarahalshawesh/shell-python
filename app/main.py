@@ -82,12 +82,10 @@ def main():
                 file_path = user_input[i + 1]
                 actions = user_input[:i]
                 os.makedirs(os.path.dirname(file_path), exist_ok=True)
-                try:
-                    with open(file_path, 'w') as file:
-                        subprocess.run(actions, stdout=file, stderr=file)
-                except Exception as e:
-                    with open(file_path, 'w') as file:
-                        file.write(str(e))
+
+                with open(file_path, 'w') as file:
+                    subprocess.run(actions, stdout=file, stderr=file)
+                
             else:
                 paths = os.environ.get("PATH").split(":")
                 for j in paths:
