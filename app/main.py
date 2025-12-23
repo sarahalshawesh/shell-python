@@ -73,7 +73,8 @@ def main():
             file_path = user_input[i + 1]
             os.makedirs(os.path.dirname(file_path), exist_ok=True)
             try:
-                output = commands[command](user_input[1:i]) 
+                output = commands[command](user_input[1:i])
+                print(output) 
                 if redirect == '2>':
                     pass
                 else:
