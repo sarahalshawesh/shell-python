@@ -55,7 +55,6 @@ def main():
         user_input = shlex.split(lines)
         command, args = user_input[0], user_input[1:]
 
-        redirect = None
         redirect_options = ['2>>', '1>>', '>>', '2>', '1>', '>']
         redirect = next((direction for direction in redirect_options if direction in user_input), None)
         
