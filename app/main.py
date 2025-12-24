@@ -56,16 +56,8 @@ def main():
         command, args = user_input[0], user_input[1:]
 
         redirect = None
-        if '>' in user_input:
-            redirect = '>'
-        elif '1>' in user_input:
-            redirect = '1>'
-        elif '2>' in user_input:
-            redirect = '2>'
-        elif '2>>' in user_input:
-            redirect = '2>>'
-        elif '1>>' in user_input or '>>' in user_input:
-            redirect = '>>'
+        redirect_options = ['2>>', '1>>', '>>', '2>', '1>', '>']
+        redirect = next((direction for direction in redirect_options if direction in user_input), None)
         
         
 
