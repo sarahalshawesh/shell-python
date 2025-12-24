@@ -62,6 +62,8 @@ def main():
             redirect = '1>'
         elif '2>' in user_input:
             redirect = '2>'
+        elif '2>>' in user_input:
+            redirect = '2>>'
         elif '1>>' in user_input or '>>' in user_input:
             redirect = '>>'
         
@@ -89,8 +91,12 @@ def main():
                     with open(file_path, 'w') as file:
                         file.write(str(output) + '\n')
             except Exception as e:
-                with open(file_path, 'w') as file:
-                    file.write(str(e) + '\n')
+                if redirect == '2>':
+                    with open(file_path, 'w') as file:
+                        file.write(str(e) + '\n')
+                else:
+                    with open(file_path, 'a') as file:
+                        file.write(str(e) + '\n')
 
 
         else:
