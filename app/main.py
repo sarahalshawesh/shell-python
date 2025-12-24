@@ -76,7 +76,7 @@ def main():
                     print(output)
                     with open(file_path, 'w') as file:
                         pass
-                elif redirect == '>>':
+                elif redirect == '>>' or redirect == '1>>':
                     with open(file_path, 'a') as file:
                         file.write(str(output) + '\n')
                 else:
