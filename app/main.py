@@ -71,7 +71,7 @@ def main():
             os.makedirs(os.path.dirname(file_path), exist_ok=True)
             try:
                 output = commands[command](user_input[1:i])
-                if redirect == '2>':
+                if redirect == '2>' or redirect == '2>>':
                     print(output)
                     with open(file_path, 'w') as file:
                         pass
