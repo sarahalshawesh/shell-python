@@ -56,7 +56,7 @@ def main():
         command, args = user_input[0], user_input[1:]
 
         redirect_options = ['2>>', '1>>', '>>', '2>', '1>', '>']
-        redirect = next((direction for direction in redirect_options if direction in user_input), None)
+        redirect = next((redirect for redirect in redirect_options if redirect in user_input), None)
         
         
 
@@ -103,6 +103,9 @@ def main():
                 elif redirect == '>>':
                     with open(file_path, 'a') as file:
                         subprocess.run(actions, stdout=file)
+                elif redirect == '2>>':
+                    with open(file_path, 'a') as file:
+                        subprocess.run(actions, stderr=file)
                 else:
                     with open(file_path, 'w') as file:
                         subprocess.run(actions, stdout=file)
