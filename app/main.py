@@ -1,4 +1,4 @@
-import sys, os, subprocess, shlex
+import sys, os, subprocess, shlex, readline, rlcompleter
 
 
 def exit_command(args):
@@ -58,6 +58,7 @@ def main():
         redirect_options = ['2>>', '1>>', '>>', '2>', '1>', '>']
         redirect = next((redirect for redirect in redirect_options if redirect in user_input), None)
         
+        readline.parse_and_bind("tab: complete")
         
 
         if command in commands and not redirect in user_input:
