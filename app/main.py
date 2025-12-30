@@ -60,6 +60,11 @@ def main():
         
         readline.parse_and_bind("tab: complete")
         
+        
+        completer = rlcompleter.Completer()
+
+        print(completer.complete("ech", 0))
+        print(completer.complete("exi", 0))
 
         if command in commands and not redirect in user_input:
             result = commands[command](args)
