@@ -46,25 +46,18 @@ commands = {
     "cd": cd_command
 }
 
+readline.parse_and_bind("tab: complete")
+readline.set_completer(rlcompleter.Completer().complete)
+
 def main():
 
     while True:
-        sys.stdout.write("$ ")
-        sys.stdout.flush()
-        lines = sys.stdin.readline()
-        user_input = shlex.split(lines)
+        line = input("$ ")
+        user_input = shlex.split(line)
         command, args = user_input[0], user_input[1:]
 
         redirect_options = ['2>>', '1>>', '>>', '2>', '1>', '>']
         redirect = next((redirect for redirect in redirect_options if redirect in user_input), None)
-        
-        readline.parse_and_bind("tab: complete")
-        
-        
-        completer = rlcompleter.Completer()
-
-        print(completer.complete("ech", 0))
-        print(completer.complete("exi", 0))
 
         if command in commands and not redirect in user_input:
             result = commands[command](args)
