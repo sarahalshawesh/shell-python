@@ -18,7 +18,7 @@ def type_command(args):
         for i in paths:
             filename = f"{i}/{command}"
             if os.path.isfile(filename) and os.access(filename, os.X_OK):
-                return f"{command} is {filename}"
+                return f"{command} is {filename}" 
         return f"{command}: not found"
 
 def pwd_command(args):
@@ -46,8 +46,15 @@ commands = {
     "cd": cd_command
 }
 
+def shell_completer(text, state):
+   command_options = [cmd for cmd in commands if cmd.startswith(text)]
+   if state < len(command_options):
+       return command_options[state]
+   else:
+       return None
+
 readline.parse_and_bind("tab: complete")
-readline.set_completer(rlcompleter.Completer().complete)
+readline.set_completer(shell_completer)
 
 def main():
 
