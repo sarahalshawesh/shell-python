@@ -53,6 +53,8 @@ def main():
 
     while True:
         line = input("$ ")
+        if not line:
+            continue
         user_input = shlex.split(line)
         command, args = user_input[0], user_input[1:]
 
