@@ -48,10 +48,7 @@ commands = {
 
 def shell_completer(text, state):
    command_options = [cmd for cmd in commands if cmd.startswith(text)]
-   if state < len(command_options):
-       return command_options[state] + " "
-   else:
-       return None
+   return command_options[state] + " " if state < len(command_options) else None
 
 readline.parse_and_bind("tab: complete")
 readline.set_completer(shell_completer)
