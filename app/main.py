@@ -49,7 +49,7 @@ commands = {
 def shell_completer(text, state):
    command_options = [cmd for cmd in commands if cmd.startswith(text)]
    if state < len(command_options):
-       return command_options[state]
+       return command_options[state] + " "
    else:
        return None
 
