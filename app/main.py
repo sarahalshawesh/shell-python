@@ -46,9 +46,7 @@ commands = {
     "cd": cd_command
 }
 
-def redirect_helper(user_input, redirect, output, mode):
-    i = user_input.index(redirect)
-    file_path = user_input[i + 1]
+def redirect_helper(file_path, output, mode):
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
     with open(file_path, mode) as file:
         file.write(str(output) + '\n')
@@ -73,33 +71,34 @@ def main():
         redirect_options = ['2>>', '1>>', '>>', '2>', '1>', '>']
         redirect = next((redirect for redirect in redirect_options if redirect in user_input), None)
 
-        if command in commands and not redirect in user_input:
+        if command in commands and not redirect:
             result = commands[command](args)
             if result is not None:
                 print(result)
-
+        
         elif command in commands and redirect in user_input:
             try:
-                output = commands[command](user_input[1:i])
+                redirect_index = user_input.index(redirect)
+                file_path = user_input[redirect_index + 1]
+                output = commands[command](user_input[1:redirect_index])
                 if redirect.startswith('2'):
-                    print(output)
-                    redirect_helper(user_input, redirect, output, 'w')
+                    redirect_helper(file_path, output, 'w')
                 elif '>>' in redirect:
-                    redirect_helper(user_input, redirect, output, 'a')
+                    redirect_helper(file_path, output, 'a')
                 else:
-                    redirect_helper(user_input, redirect, output, 'w')
+                    redirect_helper(file_path, output, 'w')
             except Exception as e:
                 if redirect == '2>':
-                    redirect_helper(user_input, redirect, output, 'w')
+                    redirect_helper(file_path, e, 'w')
                 else:
-                    redirect_helper(user_input, redirect, output, 'a')
+                    redirect_helper(file_path, e, 'a')
 
 
         else:
             if redirect:
-                i = user_input.index(redirect)
-                file_path = user_input[i + 1]
-                actions = user_input[:i]
+                redirect_index = user_input.index(redirect)
+                file_path = user_input[redirect_index + 1]
+                actions = user_input[:redirect_index]
                 os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
                 if redirect == '2>':
