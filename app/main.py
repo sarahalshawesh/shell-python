@@ -46,6 +46,14 @@ commands = {
     "cd": cd_command
 }
 
+def redirect_helper(user_input, redirect, output, mode):
+    i = user_input.index(redirect)
+    file_path = user_input[i + 1]
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
+    with open(file_path, mode) as file:
+        file.write(str(output) + '\n')
+
+
 def shell_completer(text, state):
    command_options = [cmd for cmd in commands if cmd.startswith(text)]
    return command_options[state] + " " if state < len(command_options) else None
@@ -76,23 +84,18 @@ def main():
             os.makedirs(os.path.dirname(file_path), exist_ok=True)
             try:
                 output = commands[command](user_input[1:i])
-                if redirect == '2>' or redirect == '2>>':
+                if redirect.startswith('2'):
                     print(output)
-                    with open(file_path, 'w') as file:
-                        pass
-                elif redirect == '>>' or redirect == '1>>':
-                    with open(file_path, 'a') as file:
-                        file.write(str(output) + '\n')
+                    redirect_helper(user_input, redirect, output, 'w')
+                elif '>>' in redirect:
+                    redirect_helper(user_input, redirect, output, 'a')
                 else:
-                    with open(file_path, 'w') as file:
-                        file.write(str(output) + '\n')
+                    redirect_helper(user_input, redirect, output, 'w')
             except Exception as e:
                 if redirect == '2>':
-                    with open(file_path, 'w') as file:
-                        file.write(str(e) + '\n')
+                    redirect_helper(user_input, redirect, output, 'w')
                 else:
-                    with open(file_path, 'a') as file:
-                        file.write(str(e) + '\n')
+                    redirect_helper(user_input, redirect, output, 'a')
 
 
         else:
