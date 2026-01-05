@@ -79,9 +79,6 @@ def main():
                 print(result)
 
         elif command in commands and redirect in user_input:
-            i = user_input.index(redirect)
-            file_path = user_input[i + 1]
-            os.makedirs(os.path.dirname(file_path), exist_ok=True)
             try:
                 output = commands[command](user_input[1:i])
                 if redirect.startswith('2'):
