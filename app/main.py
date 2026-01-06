@@ -81,9 +81,7 @@ def main():
                 redirect_index = user_input.index(redirect)
                 file_path = user_input[redirect_index + 1]
                 output = commands[command](user_input[1:redirect_index])
-                if redirect.startswith('2'):
-                    redirect_helper(file_path, output, 'w')
-                elif '>>' in redirect:
+                if '>>' in redirect:
                     redirect_helper(file_path, output, 'a')
                 else:
                     redirect_helper(file_path, output, 'w')

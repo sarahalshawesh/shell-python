@@ -1,4 +1,0 @@
-__pycache__
-err.txt
-list.txt
-main.py
