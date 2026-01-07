@@ -5,7 +5,7 @@ def exit_command(args):
     sys.exit(0)
 
 def echo_command(args):
-    if not None:
+    if args is not None:
         print(" ".join(args))
 
 def type_command(args):
