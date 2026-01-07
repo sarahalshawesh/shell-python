@@ -74,6 +74,7 @@ def main():
         redirect = next((redirect for redirect in redirect_options if redirect in user_input), None)
 
         if command in commands and not redirect:
+            print(command)
             result = commands[command](args)
             if result is not None:
                 print(result)
@@ -83,7 +84,6 @@ def main():
                 redirect_index = user_input.index(redirect)
                 file_path = user_input[redirect_index + 1]
                 output = commands[command](user_input[1:redirect_index])
-
                 redirect_helper(file_path, output, redirect)
             except Exception as e:
                 redirect_helper(file_path, e, redirect)
