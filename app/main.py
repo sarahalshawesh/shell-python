@@ -5,7 +5,8 @@ def exit_command(args):
     sys.exit(0)
 
 def echo_command(args):
-    print(" ".join(args))
+    if not None:
+        print(" ".join(args))
 
 def type_command(args):
     
@@ -74,7 +75,6 @@ def main():
         redirect = next((redirect for redirect in redirect_options if redirect in user_input), None)
 
         if command in commands and not redirect:
-            print(command)
             result = commands[command](args)
             if result is not None:
                 print(result)
