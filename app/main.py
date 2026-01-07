@@ -91,36 +91,35 @@ def main():
                 else:
                     redirect_helper(file_path, e, 'a')
 
+        elif redirect:
+
+            redirect_index = user_input.index(redirect)
+            file_path = user_input[redirect_index + 1]
+            actions = user_input[:redirect_index]
+            os.makedirs(os.path.dirname(file_path), exist_ok=True)
+
+            if redirect == '2>':
+                with open(file_path, 'w') as file:
+                    subprocess.run(actions, stderr=file)
+            elif redirect == '>>':
+                with open(file_path, 'a') as file:
+                    subprocess.run(actions, stdout=file)
+            elif redirect == '2>>':
+                with open(file_path, 'a') as file:
+                    subprocess.run(actions, stderr=file)
+            else:
+                with open(file_path, 'w') as file:
+                    subprocess.run(actions, stdout=file)
 
         else:
-            if redirect:
-                redirect_index = user_input.index(redirect)
-                file_path = user_input[redirect_index + 1]
-                actions = user_input[:redirect_index]
-                os.makedirs(os.path.dirname(file_path), exist_ok=True)
-
-                if redirect == '2>':
-                    with open(file_path, 'w') as file:
-                        subprocess.run(actions, stderr=file)
-                elif redirect == '>>':
-                    with open(file_path, 'a') as file:
-                        subprocess.run(actions, stdout=file)
-                elif redirect == '2>>':
-                    with open(file_path, 'a') as file:
-                        subprocess.run(actions, stderr=file)
-                else:
-                    with open(file_path, 'w') as file:
-                        subprocess.run(actions, stdout=file)
-
+            paths = os.environ.get("PATH").split(":")
+            for j in paths:
+                filename = f"{j}/{command}"
+                if os.path.isfile(filename) and os.access(filename, os.X_OK):
+                    subprocess.run(user_input)
+                    break
             else:
-                paths = os.environ.get("PATH").split(":")
-                for j in paths:
-                    filename = f"{j}/{command}"
-                    if os.path.isfile(filename) and os.access(filename, os.X_OK):
-                        subprocess.run(user_input)
-                        break
-                else:
-                    sys.stdout.write(f"{command}: command not found\n")
+                sys.stdout.write(f"{command}: command not found\n")
 
 
 
