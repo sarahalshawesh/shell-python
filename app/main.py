@@ -46,7 +46,8 @@ commands = {
     "cd": cd_command
 }
 
-def redirect_helper(file_path, output, mode):
+def redirect_helper(file_path, output, redirect):
+    mode = "a" if ">>" in redirect else "w"
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
     if output is not None:
         with open(file_path, mode) as file:
@@ -82,15 +83,11 @@ def main():
                 redirect_index = user_input.index(redirect)
                 file_path = user_input[redirect_index + 1]
                 output = commands[command](user_input[1:redirect_index])
-                if '>>' in redirect:
-                    redirect_helper(file_path, output, 'a')
-                else:
-                    redirect_helper(file_path, output, 'w')
+
+                redirect_helper(file_path, output, redirect)
             except Exception as e:
-                if redirect == '2>':
-                    redirect_helper(file_path, e, 'w')
-                else:
-                    redirect_helper(file_path, e, 'a')
+                redirect_helper(file_path, e, redirect)
+                
 
         elif redirect:
 
