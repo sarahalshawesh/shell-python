@@ -48,8 +48,9 @@ commands = {
 
 def redirect_helper(file_path, output, mode):
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
-    with open(file_path, mode) as file:
-        file.write(str(output) + '\n')
+    if output is not None:
+        with open(file_path, mode) as file:
+            file.write(str(output) + '\n')
 
 
 def shell_completer(text, state):
