@@ -47,21 +47,23 @@ commands = {
     "cd": cd_command
 }
 
-def redirect_helper(file_path, output, redirect, command, user_input):
+def redirect_helper(file_path, redirect, command, user_input):
     mode = "a" if ">>" in redirect else "w"
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
     redirect_index = user_input.index(redirect)
     file_path = user_input[redirect_index + 1]
-
-    if command in commands and output is not None:
-        with open(file_path, mode) as file:
-            file.write(str(output) + '\n')
+    
+    if command in commands:
+        output = commands[command](user_input[1:redirect_index])
+        if output is not None:
+            with open(file_path, mode) as file:
+                file.write(str(output) + '\n')
     elif redirect.startswith("2"):
         with open(file_path, mode) as file:
             subprocess.run(command, stderr=file)
     else:
         with open(file_path, mode) as file:
-                subprocess.run(command, stdout=file)
+            subprocess.run(command, stdout=file)
 
 
 def shell_completer(text, state):
@@ -100,7 +102,7 @@ def main():
 
         elif redirect:
 
-            redirect_helper(file_path, output, redirect, command, user_input)
+            redirect_helper(output, redirect, command, user_input)
 
         else:
             paths = os.environ.get("PATH").split(":")
