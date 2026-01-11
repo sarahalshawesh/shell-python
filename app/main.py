@@ -54,6 +54,8 @@ def redirect_helper(**kwargs):
     if kwargs["command"] in commands and kwargs["output"] is not None:
         if kwargs["redirect"].startswith("2"):
             print(kwargs["output"])
+            with open(kwargs["file_path"], mode) as file:
+                pass
         else:
             with open(kwargs["file_path"], mode) as file:
                 file.write(str(kwargs["output"]) + '\n')
