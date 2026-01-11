@@ -56,6 +56,9 @@ def redirect_helper(**kwargs):
             file.write(str(kwargs["output"]) + '\n')
     else:
         with open(kwargs["file_path"], mode) as file:
+            actions = kwargs.get("actions")
+            if not actions:
+                return
             if kwargs["redirect"].startswith("2"):
                 subprocess.run(kwargs["actions"], stderr=file)
             else:
