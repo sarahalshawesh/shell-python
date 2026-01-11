@@ -52,8 +52,9 @@ def redirect_helper(**kwargs):
     mode = "a" if ">>" in kwargs["redirect"] else "w"
     os.makedirs(os.path.dirname(kwargs["file_path"]), exist_ok=True)
     if kwargs["command"] in commands and kwargs["output"] is not None:
-        with open(kwargs["file_path"], mode) as file:
-            file.write(str(kwargs["output"]) + '\n')
+        if not kwargs["redirect"].startswith("2"):
+            with open(kwargs["file_path"], mode) as file:
+                file.write(str(kwargs["output"]) + '\n')
     else:
         with open(kwargs["file_path"], mode) as file:
             actions = kwargs.get("actions")
