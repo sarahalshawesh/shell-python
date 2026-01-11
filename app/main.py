@@ -47,23 +47,19 @@ commands = {
     "cd": cd_command
 }
 
-def redirect_helper(file_path, redirect, command, user_input):
-    mode = "a" if ">>" in redirect else "w"
-    os.makedirs(os.path.dirname(file_path), exist_ok=True)
-    redirect_index = user_input.index(redirect)
-    file_path = user_input[redirect_index + 1]
-    
-    if command in commands:
-        output = commands[command](user_input[1:redirect_index])
-        if output is not None:
-            with open(file_path, mode) as file:
-                file.write(str(output) + '\n')
-    elif redirect.startswith("2"):
-        with open(file_path, mode) as file:
-            subprocess.run(command, stderr=file)
+def redirect_helper(**kwargs):
+
+    mode = "a" if ">>" in kwargs["redirect"] else "w"
+    os.makedirs(os.path.dirname(kwargs["file_path"]), exist_ok=True)
+    if kwargs["command"] in commands and kwargs["output"] is not None:
+        with open(kwargs["file_path"], mode) as file:
+            file.write(str(kwargs["output"]) + '\n')
     else:
-        with open(file_path, mode) as file:
-            subprocess.run(command, stdout=file)
+        with open(kwargs["file_path"], mode) as file:
+            if kwargs["redirect"].startswith("2"):
+                subprocess.run(kwargs["actions"], stderr=file)
+            else:
+                subprocess.run(kwargs["actions"], stdout=file)
 
 
 def shell_completer(text, state):
@@ -86,23 +82,25 @@ def main():
         redirect = next((redirect for redirect in redirect_options if redirect in user_input), None)
 
         if command in commands and not redirect:
-            output = commands[command](args)
-            if output is not None:
-                print(output)
+            result = commands[command](args)
+            if result is not None:
+                print(result)
         
-        elif command in commands and redirect:
+        elif command in commands and redirect in user_input:
             try:
                 redirect_index = user_input.index(redirect)
                 file_path = user_input[redirect_index + 1]
                 output = commands[command](user_input[1:redirect_index])
-                redirect_helper(file_path, output, redirect, command, user_input)
+                redirect_helper(file_path, output, redirect, command)
             except Exception as e:
-                redirect_helper(file_path, e, redirect, command, user_input)
+                redirect_helper(file_path, e, redirect, command)
                 
 
         elif redirect:
-
-            redirect_helper(output, redirect, command, user_input)
+            redirect_index = user_input.index(redirect)
+            file_path = user_input[redirect_index + 1]
+            actions = user_input[:redirect_index]
+            redirect_helper(file_path, redirect, command, actions)
 
         else:
             paths = os.environ.get("PATH").split(":")
