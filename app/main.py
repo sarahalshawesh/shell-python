@@ -91,16 +91,16 @@ def main():
                 redirect_index = user_input.index(redirect)
                 file_path = user_input[redirect_index + 1]
                 output = commands[command](user_input[1:redirect_index])
-                redirect_helper(file_path, output, redirect, command)
+                redirect_helper(file_path=file_path, output=output, redirect=redirect, command=command)
             except Exception as e:
-                redirect_helper(file_path, e, redirect, command)
+                redirect_helper(file_path=file_path, output=e, redirect=redirect, command=command)
                 
 
         elif redirect:
             redirect_index = user_input.index(redirect)
             file_path = user_input[redirect_index + 1]
             actions = user_input[:redirect_index]
-            redirect_helper(file_path, redirect, command, actions)
+            redirect_helper(file_path=file_path, redirect=redirect, command=command, actions=actions)
 
         else:
             paths = os.environ.get("PATH").split(":")
