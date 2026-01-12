@@ -86,6 +86,12 @@ def subprocess_redirect(file_path, redirect, actions):
         else:
             subprocess.run(actions, stdout=file)
 
+def parse_redirect(user_input):
+    redirect_options = ['2>>', '1>>', '>>', '2>', '1>', '>']
+    redirect = next((redirect for redirect in redirect_options if redirect in user_input), None)
+    redirect_index = user_input.index(redirect) if redirect else None
+    file_path = user_input[redirect_index + 1] if redirect else None
+    return redirect, redirect_index, file_path
 
 def shell_completer(text, state):
    command_options = [cmd for cmd in commands if cmd.startswith(text)]
@@ -103,11 +109,11 @@ def main():
             continue
         user_input = shlex.split(line)
         command, args = user_input[0], user_input[1:]
-
-        redirect_options = ['2>>', '1>>', '>>', '2>', '1>', '>']
-        redirect = next((redirect for redirect in redirect_options if redirect in user_input), None)
-        redirect_index = user_input.index(redirect) if redirect else None
-        file_path = user_input[redirect_index + 1] if redirect else None
+        redirect, redirect_index, file_path = parse_redirect(user_input)
+        # redirect_options = ['2>>', '1>>', '>>', '2>', '1>', '>']
+        # redirect = next((redirect for redirect in redirect_options if redirect in user_input), None)
+        # redirect_index = user_input.index(redirect) if redirect else None
+        # file_path = user_input[redirect_index + 1] if redirect else None
 
         if command in commands: 
             if redirect:
