@@ -95,8 +95,7 @@ def parse_redirect(user_input):
 
 def shell_completer(text, state):
    command_options = [cmd for cmd in commands if cmd.startswith(text)]
-   if command_options is not None:
-       return command_options[state] + " " if state < len(command_options) else None
+   return command_options[state] + " " if state < len(command_options) else None
 
 readline.parse_and_bind("tab: complete")
 readline.set_completer(shell_completer)
@@ -110,10 +109,6 @@ def main():
         user_input = shlex.split(line)
         command, args = user_input[0], user_input[1:]
         redirect, redirect_index, file_path = parse_redirect(user_input)
-        # redirect_options = ['2>>', '1>>', '>>', '2>', '1>', '>']
-        # redirect = next((redirect for redirect in redirect_options if redirect in user_input), None)
-        # redirect_index = user_input.index(redirect) if redirect else None
-        # file_path = user_input[redirect_index + 1] if redirect else None
 
         if command in commands: 
             if redirect:
