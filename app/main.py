@@ -45,19 +45,22 @@ commands = {
 
 def redirect_helper(file_path, redirect, command, output, actions=None):
 
-    mode = "a" if ">>" in redirect else "w"
+    if command in commands and output is not None:
+        builtin_redirect(file_path, redirect, output)
+    if actions:
+        subprocess_redirect(file_path, redirect, actions)
+
+def ensure_dir(file_path):
     dir_path = os.path.dirname(file_path)
     if dir_path:
         os.makedirs(dir_path, exist_ok=True)
 
-    if command in commands and output is not None:
-        builtin_redirect(file_path, redirect, output, mode)
+def get_mode(redirect):
+    return "a" if ">>" in redirect else "w"
 
-    if actions:
-        subprocess_redirect(file_path, redirect, actions, mode)
-
-
-def builtin_redirect(file_path, redirect, output, mode):  
+def builtin_redirect(file_path, redirect, output):  
+    mode = get_mode(redirect)
+    ensure_dir(file_path)
     with open(file_path, mode) as file:
         if redirect.startswith("2"):
             print(output)
@@ -65,7 +68,9 @@ def builtin_redirect(file_path, redirect, output, mode):
         else:
             file.write(str(output) + '\n')
 
-def subprocess_redirect(file_path, redirect, actions, mode):
+def subprocess_redirect(file_path, redirect, actions):
+    mode = get_mode(redirect)
+    ensure_dir(file_path)
     with open(file_path, mode) as file:
         if not actions:
             return
@@ -109,7 +114,6 @@ def main():
             except Exception as e:
                 redirect_helper(file_path, redirect, command, output=e)
                 
-
         elif redirect:
             actions = user_input[:redirect_index]
             redirect_helper(file_path, redirect, command, output=None, actions=actions)
