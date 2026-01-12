@@ -43,7 +43,7 @@ commands = {
     "cd": cd_command
 }
 
-def redirect_helper(file_path, redirect, command, output, actions):
+def redirect_helper(file_path, redirect, command, output, actions=None):
 
     mode = "a" if ">>" in redirect else "w"
     dir_path = os.path.dirname(file_path)
@@ -96,14 +96,14 @@ def main():
         elif command in commands and redirect in user_input:
             try:
                 output = commands[command](user_input[1:redirect_index])
-                redirect_helper(file_path, output, redirect, command, output=output, actions=None)
+                redirect_helper(file_path, redirect, command, output)
             except Exception as e:
-                redirect_helper(file_path, output, redirect, command, output=e, actions=None)
+                redirect_helper(file_path, redirect, command, output=e)
                 
 
         elif redirect:
             actions = user_input[:redirect_index]
-            redirect_helper(file_path, output, redirect, command, output=None, actions=actions)
+            redirect_helper(file_path, redirect, command, output=None, actions=actions)
 
         else:
             paths = os.environ.get("PATH").split(":")
