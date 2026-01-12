@@ -49,6 +49,7 @@ def redirect_helper(file_path, redirect, command, output, actions):
     dir_path = os.path.dirname(file_path)
     if dir_path:
         os.makedirs(dir_path, exist_ok=True)
+
     if command in commands and output is not None:
         if redirect.startswith("2"):
             print(output)
@@ -57,10 +58,8 @@ def redirect_helper(file_path, redirect, command, output, actions):
         else:
             with open(file_path, mode) as file:
                 file.write(str(output) + '\n')
-    else:
+    if actions:
         with open(file_path, mode) as file:
-            if not actions:
-                return
             if redirect.startswith("2"):
                 subprocess.run(actions, stderr=file)
             else:
@@ -97,14 +96,14 @@ def main():
         elif command in commands and redirect in user_input:
             try:
                 output = commands[command](user_input[1:redirect_index])
-                redirect_helper(file_path, output, redirect, command, output, actions=None)
+                redirect_helper(file_path, output, redirect, command, output=output, actions=None)
             except Exception as e:
                 redirect_helper(file_path, output, redirect, command, output=e, actions=None)
                 
 
         elif redirect:
             actions = user_input[:redirect_index]
-            redirect_helper(file_path, output, redirect, command, output=None, actions)
+            redirect_helper(file_path, output, redirect, command, output=None, actions=actions)
 
         else:
             paths = os.environ.get("PATH").split(":")
