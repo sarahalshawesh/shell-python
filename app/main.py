@@ -16,7 +16,14 @@ def type_command(args):
         
     if command not in commands:
         paths = os.environ.get("PATH").split(":")
-        next((f"{command} is {p}/{command}" for p in paths if os.path.isfile(f"{p}/{command}") and os.access(f"{p}/{command}", os.X_OK)), f"{command}: not found")
+        for p in paths:
+            filename = f"{p}/{command}"
+            if os.path.isfile(filename) and os.access(filename, os.X_OK):
+                subprocess.run(command)
+                break
+            else:
+                sys.stdout.write(f"{command}: command not found\n")
+
 
 def pwd_command(args):
     return os.getcwd()
@@ -120,7 +127,14 @@ def main():
 
         else:
             paths = os.environ.get("PATH").split(":")
-            next((subprocess.run(user_input) for p in paths if os.path.isfile(f"{p}/{command}") and os.access(f"{p}/{command}", os.X_OK)), sys.stdout.write(f"{command}: command not found\n"))
+            for p in paths:
+                filename = f"{p}/{command}"
+                if os.path.isfile(filename) and os.access(filename, os.X_OK):
+                    subprocess.run(user_input)
+                    break
+                else:
+                    sys.stdout.write(f"{command}: command not found\n")
+
         
 
 
