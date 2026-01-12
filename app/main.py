@@ -109,17 +109,17 @@ def main():
         redirect_index = user_input.index(redirect) if redirect else None
         file_path = user_input[redirect_index + 1] if redirect else None
 
-        if command in commands and not redirect:
-            result = commands[command](args)
-            if result is not None:
-                print(result)
-        
-        elif command in commands and redirect in user_input:
-            try:
-                output = commands[command](user_input[1:redirect_index])
-                redirect_helper(file_path, redirect, command, output)
-            except Exception as e:
-                redirect_helper(file_path, redirect, command, output=e)
+        if command in commands: 
+            if redirect:
+                try:
+                    output = commands[command](user_input[1:redirect_index])
+                    redirect_helper(file_path, redirect, command, output)
+                except Exception as e:
+                    redirect_helper(file_path, redirect, command, output=e)
+            else:
+                result = commands[command](args)
+                if result is not None:
+                    print(result)
                 
         elif redirect:
             actions = user_input[:redirect_index]
