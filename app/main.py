@@ -67,13 +67,12 @@ def builtin_redirect(file_path, redirect, output, mode):
 
 def subprocess_redirect(file_path, redirect, actions, mode):
     with open(file_path, mode) as file:
-        subprocess.run(actions, stderr=file) if redirect.startswith("2") else subprocess.run(actions, stdout=file)
-        
-
-        # if redirect.startswith("2"):
-        #     subprocess.run(actions, stderr=file)
-        # else:
-        #     subprocess.run(actions, stdout=file)
+        if not actions:
+            return
+        if redirect.startswith("2"):
+            subprocess.run(actions, stderr=file)
+        else:
+            subprocess.run(actions, stdout=file)
 
 
 def shell_completer(text, state):
