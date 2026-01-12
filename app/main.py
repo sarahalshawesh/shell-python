@@ -51,19 +51,27 @@ def redirect_helper(file_path, redirect, command, output, actions=None):
         os.makedirs(dir_path, exist_ok=True)
 
     if command in commands and output is not None:
-        if redirect.startswith("2"):
+        builtin_redirect(file_path, redirect, output, mode)
+
+    if actions:
+        subprocess_redirect(file_path, redirect, actions, mode)
+
+
+def builtin_redirect(file_path, redirect, output, mode):
+    if redirect.startswith("2"):
             print(output)
             with open(file_path, mode) as file:
                 pass
-        else:
-            with open(file_path, mode) as file:
-                file.write(str(output) + '\n')
-    if actions:
+    else:
         with open(file_path, mode) as file:
-            if redirect.startswith("2"):
-                subprocess.run(actions, stderr=file)
-            else:
-                subprocess.run(actions, stdout=file)
+            file.write(str(output) + '\n')
+
+def subprocess_redirect(file_path, redirect, actions, mode):
+    with open(file_path, mode) as file:
+        if redirect.startswith("2"):
+            subprocess.run(actions, stderr=file)
+        else:
+            subprocess.run(actions, stdout=file)
 
 
 def shell_completer(text, state):
