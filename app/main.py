@@ -43,27 +43,28 @@ commands = {
     "cd": cd_command
 }
 
-def redirect_helper(**kwargs):
+def redirect_helper(file_path, redirect, command, output, actions):
 
-    mode = "a" if ">>" in kwargs["redirect"] else "w"
-    os.makedirs(os.path.dirname(kwargs["file_path"]), exist_ok=True)
-    if kwargs["command"] in commands and kwargs["output"] is not None:
-        if kwargs["redirect"].startswith("2"):
-            print(kwargs["output"])
-            with open(kwargs["file_path"], mode) as file:
+    mode = "a" if ">>" in redirect else "w"
+    dir_path = os.path.dirname(file_path)
+    if dir_path:
+        os.makedirs(dir_path, exist_ok=True)
+    if command in commands and output is not None:
+        if redirect.startswith("2"):
+            print(output)
+            with open(file_path, mode) as file:
                 pass
         else:
-            with open(kwargs["file_path"], mode) as file:
-                file.write(str(kwargs["output"]) + '\n')
+            with open(file_path, mode) as file:
+                file.write(str(output) + '\n')
     else:
-        with open(kwargs["file_path"], mode) as file:
-            actions = kwargs.get("actions")
+        with open(file_path, mode) as file:
             if not actions:
                 return
-            if kwargs["redirect"].startswith("2"):
-                subprocess.run(kwargs["actions"], stderr=file)
+            if redirect.startswith("2"):
+                subprocess.run(actions, stderr=file)
             else:
-                subprocess.run(kwargs["actions"], stdout=file)
+                subprocess.run(actions, stdout=file)
 
 
 def shell_completer(text, state):
@@ -96,25 +97,19 @@ def main():
         elif command in commands and redirect in user_input:
             try:
                 output = commands[command](user_input[1:redirect_index])
-                redirect_helper(file_path=file_path, output=output, redirect=redirect, command=command)
+                redirect_helper(file_path, output, redirect, command, output, actions=None)
             except Exception as e:
-                redirect_helper(file_path=file_path, output=e, redirect=redirect, command=command)
+                redirect_helper(file_path, output, redirect, command, output=e, actions=None)
                 
 
         elif redirect:
             actions = user_input[:redirect_index]
-            redirect_helper(file_path=file_path, redirect=redirect, command=command, actions=actions)
+            redirect_helper(file_path, output, redirect, command, output=None, actions)
 
         else:
             paths = os.environ.get("PATH").split(":")
             next((subprocess.run(user_input) for p in paths if os.path.isfile(f"{p}/{command}") and os.access(f"{p}/{command}", os.X_OK)), sys.stdout.write(f"{command}: command not found\n"))
-            # for i in paths:
-            #     filename = f"{i}/{command}"
-            #     if os.path.isfile(filename) and os.access(filename, os.X_OK):
-            #         subprocess.run(user_input)
-            #         break
-            # else:
-            #     sys.stdout.write(f"{command}: command not found\n")
+        
 
 
 
