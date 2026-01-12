@@ -16,7 +16,7 @@ def type_command(args):
         
     if command not in commands:
         paths = os.environ.get("PATH").split(":")
-        x = next((f"{command} is {p}/{command}" for p in paths if os.path.isfile(f"{p}/{command}") and os.access(f"{p}/{command}", os.X_OK)), f"{command}: not found")
+        next((f"{command} is {p}/{command}" for p in paths if os.path.isfile(f"{p}/{command}") and os.access(f"{p}/{command}", os.X_OK)), f"{command}: not found")
 
 def pwd_command(args):
     return os.getcwd()
