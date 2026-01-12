@@ -16,11 +16,7 @@ def type_command(args):
         
     if command not in commands:
         paths = os.environ.get("PATH").split(":")
-        for i in paths:
-            filename = f"{i}/{command}"
-            if os.path.isfile(filename) and os.access(filename, os.X_OK):
-                return f"{command} is {filename}" 
-        return f"{command}: not found"
+        x = next((f"{command} is {p}/{command}" for p in paths if os.path.isfile(f"{p}/{command}") and os.access(f"{p}/{command}", os.X_OK)), f"{command}: not found")
 
 def pwd_command(args):
     return os.getcwd()
@@ -72,7 +68,8 @@ def redirect_helper(**kwargs):
 
 def shell_completer(text, state):
    command_options = [cmd for cmd in commands if cmd.startswith(text)]
-   return command_options[state] + " " if state < len(command_options) else None
+   if command_options is not None:
+       return command_options[state] + " " if state < len(command_options) else None
 
 readline.parse_and_bind("tab: complete")
 readline.set_completer(shell_completer)
@@ -112,8 +109,8 @@ def main():
 
         else:
             paths = os.environ.get("PATH").split(":")
-            for j in paths:
-                filename = f"{j}/{command}"
+            for i in paths:
+                filename = f"{i}/{command}"
                 if os.path.isfile(filename) and os.access(filename, os.X_OK):
                     subprocess.run(user_input)
                     break
