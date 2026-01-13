@@ -1,4 +1,5 @@
-import sys, os, subprocess, shlex, readline, rlcompleter, pathlib
+import sys, os, subprocess, shlex, readline, rlcompleter
+from pathlib import Path
 
 
 def exit_command(args):
@@ -15,10 +16,10 @@ def type_command(args):
         return f"{command} is a shell builtin"
         
     if command not in commands:
-        paths = os.environ.get("PATH").split(":")
-        for p in paths:
-            filename = f"{p}/{command}"
-            if os.path.isfile(filename) and os.access(filename, os.X_OK):
+        dirs = os.environ.get("PATH").split(":")
+        for dir in dirs:
+            path = Path(dir) / command
+            if Path.isfile() and os.access(path, os.X_OK):
                 subprocess.run(command)
                 break
             else:
