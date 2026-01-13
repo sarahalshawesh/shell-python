@@ -27,10 +27,10 @@ def type_command(args):
 
 
 def pwd_command(args):
-    return os.getcwd()
+    return Path.getcwd()
 
 def cd_command(args):
-    home_path = pathlib.Path.home()
+    home_path = Path.home()
     if not args:
         os.chdir(home_path)
         return
@@ -38,7 +38,7 @@ def cd_command(args):
         dir_path = args[0]
         if dir_path == "~":
             os.chdir(home_path)
-        elif pathlib.is_dir(dir_path):
+        elif Path.is_dir(dir_path):
             os.chdir(dir_path)
         else:
             return f"cd: {dir_path}: No such file or directory"
@@ -59,9 +59,9 @@ def redirect_helper(file_path, redirect, command, output, actions=None):
         subprocess_redirect(file_path, redirect, actions)
 
 def ensure_dir(file_path):
-    dir_path = os.path.dirname(file_path)
+    dir_path = Path(file_path).name
     if dir_path:
-        os.makedirs(dir_path, exist_ok=True)
+        Path.mkdir(parents=True, exist_ok=True)
 
 def get_mode(redirect):
     return "a" if ">>" in redirect else "w"
