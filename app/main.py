@@ -1,4 +1,4 @@
-import sys, os, subprocess, shlex, readline, rlcompleter
+import sys, os, subprocess, shlex, readline, rlcompleter, pathlib
 
 
 def exit_command(args):
@@ -29,7 +29,7 @@ def pwd_command(args):
     return os.getcwd()
 
 def cd_command(args):
-    home_path = os.getenv("HOME")
+    home_path = pathlib.Path.home()
     if not args:
         os.chdir(home_path)
         return
@@ -37,7 +37,7 @@ def cd_command(args):
         dir_path = args[0]
         if dir_path == "~":
             os.chdir(home_path)
-        elif os.path.exists(dir_path):
+        elif pathlib.is_dir(dir_path):
             os.chdir(dir_path)
         else:
             return f"cd: {dir_path}: No such file or directory"
