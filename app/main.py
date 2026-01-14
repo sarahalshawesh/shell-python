@@ -128,14 +128,14 @@ def main():
             redirect_helper(file_path, redirect, command, output=None, actions=actions)
 
         else:
-            paths = os.environ.get("PATH").split(":")
-            for p in paths:
-                filename = f"{p}/{command}"
-                if os.path.isfile(filename) and os.access(filename, os.X_OK):
+            dirs = os.environ.get("PATH").split(":")
+            for dir in dirs:
+                path = Path(dir) / command
+                if Path.isfile() and os.access(path, os.X_OK):
                     subprocess.run(user_input)
                     break
                 else:
-                    sys.stdout.write(f"{command}: command not found\n")
+                    print(f"{command}: command not found\n")
 
         
 
