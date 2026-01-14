@@ -69,12 +69,19 @@ def get_mode(redirect):
 def builtin_redirect(file_path, redirect, output):  
     mode = get_mode(redirect)
     ensure_dir(file_path)
-    with open(file_path, mode) as file:
+    p = Path(file_path)
+    with p.open(mode=mode, newLine='\n'):
         if redirect.startswith("2"):
             print(output)
             pass
         else:
-            file.write(str(output) + '\n')
+            p.write_text(output)
+    # with open(file_path, mode) as file:
+    #     if redirect.startswith("2"):
+    #         print(output)
+    #         pass
+    #     else:
+    #         file.write(str(output) + '\n')
 
 def subprocess_redirect(file_path, redirect, actions):
     mode = get_mode(redirect)
