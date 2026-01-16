@@ -10,24 +10,19 @@ def echo_command(args):
         return " ".join(args)
 
 def type_command(args):
-    
     command = args[0]
     if command in commands:
         return f"{command} is a shell builtin"
         
-    if command not in commands:
-        dirs = os.environ.get("PATH").split(":")
-        for dir in dirs:
-            path = Path(dir) / command
-            if Path.isfile() and os.access(path, os.X_OK):
-                subprocess.run(command)
-                break
-            else:
-                sys.stdout.write(f"{command}: command not found\n")
+    for path in os.environ.get("PATH").split(":"):
+        p = Path(path) / command
+        if p.is_file() and os.access(p, os.X_OK):
+            return f"{command} is {p}"
+    return f"{command}: command not found\n"
 
 
 def pwd_command(args):
-    return Path.getcwd()
+    return str(Path.cwd())
 
 def cd_command(args):
     home_path = Path.home()
@@ -38,7 +33,7 @@ def cd_command(args):
         dir_path = args[0]
         if dir_path == "~":
             os.chdir(home_path)
-        elif Path.is_dir(dir_path):
+        elif Path(dir_path).is_dir():
             os.chdir(dir_path)
         else:
             return f"cd: {dir_path}: No such file or directory"
@@ -59,9 +54,8 @@ def redirect_helper(file_path, redirect, command, output, actions=None):
         subprocess_redirect(file_path, redirect, actions)
 
 def ensure_dir(file_path):
-    dir_path = Path(file_path).name
-    if dir_path:
-        Path.mkdir(parents=True, exist_ok=True)
+    p = Path(file_path)
+    p.parent.mkdir(parents=True, exist_ok=True)
 
 def get_mode(redirect):
     return "a" if ">>" in redirect else "w"
@@ -70,18 +64,12 @@ def builtin_redirect(file_path, redirect, output):
     mode = get_mode(redirect)
     ensure_dir(file_path)
     p = Path(file_path)
-    with p.open(mode=mode, newLine='\n'):
+    with p.open(mode=mode) as file:
         if redirect.startswith("2"):
             print(output)
-            pass
-        else:
-            p.write_text(output)
-    # with open(file_path, mode) as file:
-    #     if redirect.startswith("2"):
-    #         print(output)
-    #         pass
-    #     else:
-    #         file.write(str(output) + '\n')
+            return
+        file.write(output + '\n')
+
 
 def subprocess_redirect(file_path, redirect, actions):
     mode = get_mode(redirect)
@@ -105,6 +93,28 @@ def shell_completer(text, state):
    command_options = [cmd for cmd in commands if cmd.startswith(text)]
    return command_options[state] + " " if state < len(command_options) else None
 
+def handle_builtin_cmds(user_input, file_path, redirect, command, redirect_index, args):
+    if redirect:
+        try:
+            output = commands[command](user_input[1:redirect_index])
+            redirect_helper(file_path, redirect, command, output)
+        except Exception as e:
+            redirect_helper(file_path, redirect, command, output=e)
+    else:
+        result = commands[command](args)
+        if result is not None:
+            print(result)
+
+def handle_external_cmds(user_input, command):
+    paths = os.environ.get("PATH").split(":")
+    for path in paths:
+        p = Path(path) / command
+        if p.is_file() and os.access(p, os.X_OK):
+            subprocess.run(user_input)
+            break
+    else:
+        print(f"{command}: command not found\n")
+
 readline.parse_and_bind("tab: complete")
 readline.set_completer(shell_completer)
 
@@ -119,30 +129,14 @@ def main():
         redirect, redirect_index, file_path = parse_redirect(user_input)
 
         if command in commands: 
-            if redirect:
-                try:
-                    output = commands[command](user_input[1:redirect_index])
-                    redirect_helper(file_path, redirect, command, output)
-                except Exception as e:
-                    redirect_helper(file_path, redirect, command, output=e)
-            else:
-                result = commands[command](args)
-                if result is not None:
-                    print(result)
+            handle_builtin_cmds(user_input, file_path, redirect, command, redirect_index, args)
                 
         elif redirect:
             actions = user_input[:redirect_index]
             redirect_helper(file_path, redirect, command, output=None, actions=actions)
 
         else:
-            dirs = os.environ.get("PATH").split(":")
-            for dir in dirs:
-                path = Path(dir) / command
-                if Path.isfile() and os.access(path, os.X_OK):
-                    subprocess.run(user_input)
-                    break
-                else:
-                    print(f"{command}: command not found\n")
+            handle_external_cmds(user_input, command)
 
         
 
