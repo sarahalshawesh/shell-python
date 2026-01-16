@@ -115,6 +115,13 @@ def handle_external_cmds(user_input, command):
     else:
         print(f"{command}: command not found\n")
 
+def auto(command):
+    for path in os.environ.get("PATH").split(":"):
+        p = Path(path) / command
+        if p.is_file() and os.access(p, os.X_OK):
+            readline.parse_and_bind("tab: {command}")
+
+
 readline.parse_and_bind("tab: complete")
 readline.set_completer(shell_completer)
 
