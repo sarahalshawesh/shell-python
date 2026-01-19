@@ -119,9 +119,10 @@ def shell_completer(text, state):
         if cmd.startswith(text):
             matches.append(cmd)
             
-    for path in os.environ.get("PATH").split(":"):
-        p = Path(path)
-        for p in p:
+    for dir in os.environ.get("PATH").split(":"):
+        
+        for path in dir:
+            p = Path(path)
             if p.name.startswith(text) and os.access(p, os.X_OK):
                 matches.append(p.name)
 
