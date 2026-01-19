@@ -120,10 +120,9 @@ def shell_completer(text, state):
             matches.append(cmd)
             
     for path in os.environ.get("PATH").split(":"):
-        p = Path(path) / text
-        if p.name.startswith(text):
-            if p.is_file() and os.access(p, os.X_OK):
-                matches.append(p.name)
+        p = Path(path).startswith(text)
+        if p.is_file() and os.access(p, os.X_OK):
+            matches.append(p.name)
 
     return matches[state] if state < len(matches) else None
 
