@@ -14,8 +14,8 @@ def type_command(args):
     if command in commands:
         return f"{command} is a shell builtin"
         
-    for path in os.environ.get("PATH").split(":"):
-        p = Path(path) / command
+    for dir in os.environ.get("PATH").split(":"):
+        p = Path(dir) / command
         if p.is_file() and os.access(p, os.X_OK):
             return f"{command} is {p}"
     return f"{command}: command not found\n"
@@ -102,9 +102,9 @@ def handle_builtin_cmds(user_input, file_path, redirect, command, redirect_index
             print(result)
 
 def handle_external_cmds(user_input, command):
-    paths = os.environ.get("PATH").split(":")
-    for path in paths:
-        p = Path(path) / command
+    dirs = os.environ.get("PATH").split(":")
+    for dir in dirs:
+        p = Path(dir) / command
         if p.is_file() and os.access(p, os.X_OK):
             subprocess.run(user_input)
             break
@@ -120,11 +120,12 @@ def shell_completer(text, state):
             matches.append(cmd)
             
     for dir in os.environ.get("PATH").split(":"):
+        matches = sorted(Path(dir).glob(f"{text}*.*"))
         
-        for path in dir:
-            p = Path(path)
-            if p.name.startswith(text) and os.access(p, os.X_OK):
-                matches.append(p.name)
+        # for path in dir:
+        #     p = Path(path)
+        #     if p.name.startswith(text) and os.access(p, os.X_OK):
+        #         matches.append(p.name)
 
     return matches[state] if state < len(matches) else None
 
