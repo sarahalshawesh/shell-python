@@ -89,10 +89,6 @@ def parse_redirect(user_input):
     file_path = user_input[redirect_index + 1] if redirect else None
     return redirect, redirect_index, file_path
 
-def shell_completer(text, state):
-   command_options = [cmd for cmd in commands if cmd.startswith(text)]
-   return command_options[state] + " " if state < len(command_options) else None
-
 def handle_builtin_cmds(user_input, file_path, redirect, command, redirect_index, args):
     if redirect:
         try:
@@ -115,12 +111,20 @@ def handle_external_cmds(user_input, command):
     else:
         print(f"{command}: command not found\n")
 
-def auto(command):
-    for path in os.environ.get("PATH").split(":"):
-        p = Path(path) / command
-        if p.is_file() and os.access(p, os.X_OK):
-            readline.parse_and_bind("tab: {command}")
 
+def shell_completer(text, state):
+
+    matches = []
+    for cmd in commands:
+        if cmd.startswith(text):
+            matches.append(cmd)
+            
+    for path in os.environ.get("PATH").split(":"):
+        p = Path(path) / text
+        if p.is_file() and os.access(p, os.X_OK):
+           matches.append(p.name)
+
+    return matches[state] if state < len(matches) else None
 
 readline.parse_and_bind("tab: complete")
 readline.set_completer(shell_completer)
