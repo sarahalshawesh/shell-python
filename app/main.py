@@ -18,7 +18,7 @@ def type_command(args):
         p = Path(dir) / command
         if p.is_file() and os.access(p, os.X_OK):
             return f"{command} is {p}"
-    return f"{command}: not found\n"
+    return f"{command}: not found"
 
 
 def pwd_command(args):
