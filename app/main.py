@@ -126,7 +126,7 @@ def shell_completer(text, state):
             matches.append(cmd.name)
 
     matches = sorted(matches)
-    return matches[state] if state < len(matches) else None
+    return matches[state] + " " if state < len(matches) else None
 
 readline.parse_and_bind("tab: complete")
 readline.set_completer(shell_completer)
