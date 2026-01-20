@@ -109,7 +109,7 @@ def handle_external_cmds(user_input, command):
             subprocess.run(user_input)
             break
     else:
-        print(f"{command}: command not found\n")
+        print(f"{command}: command not found")
 
 
 def shell_completer(text, state):
