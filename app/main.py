@@ -122,7 +122,7 @@ def shell_completer(text, state):
     for dir in os.environ.get("PATH").split(":"):
         paths = sorted(Path(dir).glob(f"{text}*"))
         external_commands = list(filter(lambda x: os.access(x, os.X_OK),  paths))
-        for cmd in external_commands:
+        for cmd.name in external_commands:
             matches.append(cmd)
 
     matches = sorted(matches)
