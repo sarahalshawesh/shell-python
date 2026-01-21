@@ -124,12 +124,17 @@ def shell_completer(text, state):
         external_commands = list(filter(lambda x: os.access(x, os.X_OK),  paths))
         for cmd in external_commands:
             matches.append(cmd.name)
+    
+    if matches:
+        print("\x07")
 
     matches = sorted(matches)
     return matches[state] + " " if state < len(matches) else None
 
 readline.parse_and_bind("tab: complete")
 readline.set_completer(shell_completer)
+    
+
 
 def main():
 
