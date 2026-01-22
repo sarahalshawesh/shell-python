@@ -113,8 +113,9 @@ def handle_external_cmds(user_input, command):
 
 
 def shell_completer(text, state):
-
     matches = []
+    global tab_count, last_prefix
+
     for cmd in commands:
         if cmd.startswith(text):
             matches.append(cmd)
@@ -125,15 +126,27 @@ def shell_completer(text, state):
         for cmd in external_commands:
             matches.append(cmd.name)
     
-    if matches:
+    if len(matches) > 1:
         print("\x07")
 
+    if text != last_prefix:
+        tab_count = 1
+    else:
+        tab_count += 1
+
+    last_prefix = text
     matches = sorted(matches)
+
+    if len(matches) > 1:
+        print("\x07")
+
     return matches[state] + " " if state < len(matches) else None
 
+tab_count = 0
+last_prefix = ""
 readline.parse_and_bind("tab: complete")
 readline.set_completer(shell_completer)
-    
+
 
 
 def main():
