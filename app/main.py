@@ -125,22 +125,21 @@ def shell_completer(text, state):
         external_commands = list(filter(lambda x: os.access(x, os.X_OK),  paths))
         for cmd in external_commands:
             matches.append(cmd.name)
-    
-    if len(matches) > 1:
-        print("\x07")
 
-    if text != last_prefix:
-        tab_count = 1
-    else:
-        tab_count += 1
+    if state == 0:
+        if text != last_prefix:
+            tab_count = 1
+        else:
+            tab_count += 1
+
+        if tab_count == 1:
+            print("\x07")
 
     last_prefix = text
     matches = sorted(matches)
 
-    if len(matches) > 1:
-        print("\x07")
-
-    return matches[state] + " " if state < len(matches) else None
+    if tab_count == 2:
+        return matches[state] + " " if state < len(matches) else None
 
 tab_count = 0
 last_prefix = ""
