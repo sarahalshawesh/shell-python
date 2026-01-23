@@ -125,6 +125,8 @@ def shell_completer(text, state):
         external_commands = list(filter(lambda x: os.access(x, os.X_OK),  paths))
         for cmd in external_commands:
             matches.append(cmd.name)
+            
+    matches = sorted(matches)
 
     if state == 0:
         if text != last_prefix:
@@ -138,7 +140,7 @@ def shell_completer(text, state):
             print("  ".join(matches))
 
     last_prefix = text
-    matches = sorted(matches)
+    
 
     return matches[state] + " " if state < len(matches) else None
 
