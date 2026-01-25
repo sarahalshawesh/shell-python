@@ -134,9 +134,9 @@ def shell_completer(text, state):
         else:
             tab_count += 1
 
-        if tab_count == 1:
+        if tab_count == 1 and len(matches) < 1:
             print("\x07")
-        else:
+        elif tab_count > 1:
             print("  ".join(matches))
 
     last_prefix = text
@@ -154,13 +154,10 @@ readline.set_completer(shell_completer)
 def main():
 
     while True:
-        line = ""
-        if last_prefix:
-            line = input(f"$ {last_prefix}")
-        else:
-            line = input("$ ")
+        line = input("$ ")
         if not line:
             continue
+        
         user_input = shlex.split(line)
         command, args = user_input[0], user_input[1:]
         redirect, redirect_index, file_path = parse_redirect(user_input)
