@@ -125,7 +125,7 @@ def shell_completer(text, state):
         external_commands = list(filter(lambda x: os.access(x, os.X_OK),  paths))
         for cmd in external_commands:
             matches.append(cmd.name)
-            
+
     matches = sorted(matches)
 
     if state == 0:
@@ -138,6 +138,7 @@ def shell_completer(text, state):
             print("\x07")
         else:
             print("  ".join(matches))
+            input(f"$ {last_prefix}")
 
     last_prefix = text
     
