@@ -137,8 +137,7 @@ def shell_completer(text, state):
         if tab_count == 1:
             print("\x07")
         else:
-            print("  ".join(matches))
-            input(f"$ {last_prefix}")
+            return "  ".join(matches)
 
     last_prefix = text
     
