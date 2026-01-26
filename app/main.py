@@ -131,7 +131,7 @@ def shell_completer(text, state):
     
     if state == 0:
         if len(matches) == 1:
-            return matches[state] + " "
+            print(matches[state] + " ")
         
         if text != last_prefix:
             tab_count = 1
@@ -146,6 +146,7 @@ def shell_completer(text, state):
             print(f"$ {last_prefix}")
 
     last_prefix = text
+    return matches[state] + " " if state < len(matches) else None
     
 
 tab_count = 0
