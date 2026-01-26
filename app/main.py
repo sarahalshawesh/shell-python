@@ -129,7 +129,7 @@ def shell_completer(text, state):
 
     matches = sorted(matches)
     if len(matches) == 1:
-        return matches[state] + " " if state < len(matches) else None
+        return matches[state] + " "
     
     if state == 0:
         if text != last_prefix:
