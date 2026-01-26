@@ -134,7 +134,7 @@ def shell_completer(text, state):
         else:
             tab_count += 1
 
-        if tab_count == 1 and len(matches) < 1:
+        if tab_count == 1 and len(matches) > 1:
             print("\x07")
         elif tab_count > 1:
             print("  ".join(matches))
@@ -157,7 +157,7 @@ def main():
         line = input("$ ")
         if not line:
             continue
-        
+
         user_input = shlex.split(line)
         command, args = user_input[0], user_input[1:]
         redirect, redirect_index, file_path = parse_redirect(user_input)
