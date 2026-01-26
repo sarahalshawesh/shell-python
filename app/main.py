@@ -119,9 +119,7 @@ def shell_completer(text, state):
     for cmd in commands:
         if cmd.startswith(text):
             matches.append(cmd)
-        
-    if cmd in commands:
-        return matches[state] + " " if state < len(matches) else None
+   
             
     for dir in os.environ.get("PATH").split(":"):
         paths = sorted(Path(dir).glob(f"{text}*"))
