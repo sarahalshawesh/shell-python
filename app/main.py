@@ -129,7 +129,7 @@ def shell_completer(text, state):
 
     matches = sorted(matches)
     
-    if state == 0:
+    if tab_count == 0:
         if len(matches) == 1:
             return matches[0] + " "
         
