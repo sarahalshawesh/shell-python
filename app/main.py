@@ -128,7 +128,9 @@ def shell_completer(text, state):
             matches.append(cmd.name)
 
     matches = sorted(matches)
-
+    if len(matches) == 1:
+        return matches[state] + " " if state < len(matches) else None
+    
     if state == 0:
         if text != last_prefix:
             tab_count = 1
@@ -143,8 +145,7 @@ def shell_completer(text, state):
             print(f"$ {last_prefix}")
 
     last_prefix = text
-    if len(matches) == 1:
-        return matches[state] + " " if state < len(matches) else None
+    
 
 tab_count = 0
 last_prefix = ""
