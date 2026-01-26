@@ -139,6 +139,7 @@ def shell_completer(text, state):
 
         if tab_count == 2:
             print("  ".join(matches))
+            print(f"$ {last_prefix}")
 
     last_prefix = text
     if len(matches) == 1:
