@@ -131,6 +131,7 @@ def shell_completer(text, state):
 
         if len(cached_matches) == 1:
             last_prefix = text
+            tab_count = 0
             return cached_matches[0] + " "
         
         if text != last_prefix:
