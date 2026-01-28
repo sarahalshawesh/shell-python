@@ -126,7 +126,7 @@ def shell_completer(text, state):
             paths = sorted(Path(dir).glob(f"{text}*"))
             external_commands = list(filter(lambda x: os.access(x, os.X_OK),  paths))
             for cmd in external_commands:
-                matches.append(cmd.name)
+                matches.append(cmd.name + " ")
         
         cached_matches = sorted(matches)
 
@@ -142,7 +142,7 @@ def shell_completer(text, state):
                 print("\x07")
             elif tab_count == 2 and not printed_list:
                 printed_list = True
-                print("  ".join(cached_matches) + " ")
+                print("  ".join(cached_matches))
                 print(f"$ {text}")
 
         last_prefix = text
