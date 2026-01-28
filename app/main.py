@@ -114,7 +114,7 @@ def handle_external_cmds(user_input, command):
 
 def shell_completer(text, state):
     matches = []
-    global tab_count, last_prefix
+    global tab_count, last_prefix, cached_matches
     
     if state == 0:
         for cmd in commands:
