@@ -128,14 +128,16 @@ def shell_completer(text, state):
                 matches.append(cmd.name)
         
         cached_matches = sorted(matches)
+
+        if len(cached_matches) == 1:
+            last_prefix = text
+            return cached_matches[0] + " "
         
         if text != last_prefix:
             tab_count = 1
         else:
             tab_count += 1
 
-        if len(cached_matches) == 1:
-            return cached_matches[0] + " "
  
         if tab_count == 1 and len(cached_matches) > 1:
             print("\x07")
