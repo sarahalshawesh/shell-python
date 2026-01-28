@@ -146,7 +146,6 @@ def shell_completer(text, state):
             print("\x07")
         elif tab_count == 2:
             if printed_list is False:
-                print()
                 print("  ".join(cached_matches))
                 print(f"$ {last_prefix}")
                 printed_list = True
