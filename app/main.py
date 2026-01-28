@@ -137,19 +137,20 @@ def shell_completer(text, state):
         if text != last_prefix:
             tab_count = 1
         else:
-            tab_count += 1
+            tab_count = 2
 
  
         if tab_count == 1 and len(cached_matches) > 1:
             print("\x07")
         elif tab_count == 2:
+            print()
             print("  ".join(cached_matches))
             print(f"$ {last_prefix}")
         else:
             pass
 
         last_prefix = text
-        
+
     return cached_matches[state] if state < len(cached_matches) else None
 
 
