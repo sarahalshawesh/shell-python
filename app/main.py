@@ -144,7 +144,7 @@ def shell_completer(text, state):
             print("  ".join(cached_matches))
             print(f"$ {last_prefix}")
 
-    last_prefix = text
+        last_prefix = text
     return cached_matches[state] + " " if state < len(cached_matches) else None
     
 
