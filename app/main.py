@@ -114,7 +114,7 @@ def handle_external_cmds(user_input, command):
 
 def shell_completer(text, state):
     matches = []
-    global tab_count, last_prefix, cached_matches
+    global tab_count, last_prefix, cached_matches, printed_list
     
     if state == 0:
         for cmd in commands:
@@ -145,9 +145,11 @@ def shell_completer(text, state):
         if tab_count == 1 and len(cached_matches) > 1:
             print("\x07")
         elif tab_count == 2:
-            print()
-            print("  ".join(cached_matches))
-            print(f"$ {last_prefix}")
+            if printed_list is False:
+                print()
+                print("  ".join(cached_matches))
+                print(f"$ {last_prefix}")
+                printed_list = True
         else:
             pass
 
@@ -159,6 +161,7 @@ def shell_completer(text, state):
 tab_count = 0
 last_prefix = ""
 cached_matches = []
+printed_list = False
 readline.parse_and_bind("tab: complete")
 readline.set_completer(shell_completer)
 
