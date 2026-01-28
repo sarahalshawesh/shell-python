@@ -120,7 +120,7 @@ def shell_completer(text, state):
 
         for cmd in commands:
             if cmd.startswith(text):
-                matches.append(cmd)
+                matches.append(cmd + " ")
      
         for dir in os.environ.get("PATH").split(":"):
             paths = sorted(Path(dir).glob(f"{text}*"))
