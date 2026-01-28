@@ -115,42 +115,42 @@ def handle_external_cmds(user_input, command):
 def shell_completer(text, state):
     matches = []
     global tab_count, last_prefix
-
-    for cmd in commands:
-        if cmd.startswith(text):
-            matches.append(cmd)
-   
-            
-    for dir in os.environ.get("PATH").split(":"):
-        paths = sorted(Path(dir).glob(f"{text}*"))
-        external_commands = list(filter(lambda x: os.access(x, os.X_OK),  paths))
-        for cmd in external_commands:
-            matches.append(cmd.name)
-
-    matches = sorted(matches)
     
-    if tab_count == 0:
-        if len(matches) == 1:
-            return matches[0] + " "
+    if state == 0:
+        for cmd in commands:
+            if cmd.startswith(text):
+                matches.append(cmd)
+     
+        for dir in os.environ.get("PATH").split(":"):
+            paths = sorted(Path(dir).glob(f"{text}*"))
+            external_commands = list(filter(lambda x: os.access(x, os.X_OK),  paths))
+            for cmd in external_commands:
+                matches.append(cmd.name)
+        
+        cached_matches = sorted(matches)
+
+        if len(cached_matches) == 1:
+            return cached_matches[0] + " "
         
         if text != last_prefix:
             tab_count = 1
         else:
             tab_count += 1
  
-        if tab_count == 1 and len(matches) > 1:
+        if tab_count == 1 and len(cached_matches) > 1:
             print("\x07")
 
         if tab_count == 2:
-            print("  ".join(matches))
+            print("  ".join(cached_matches))
             print(f"$ {last_prefix}")
 
     last_prefix = text
-    return matches[state] + " " if state < len(matches) else None
+    return cached_matches[state] + " " if state < len(cached_matches) else None
     
 
 tab_count = 0
 last_prefix = ""
+cached_matches = []
 readline.parse_and_bind("tab: complete")
 readline.set_completer(shell_completer)
 
