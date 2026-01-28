@@ -136,6 +136,8 @@ def shell_completer(text, state):
         
         if text != last_prefix:
             tab_count = 1
+        elif tab_count < 2:
+            tab_count += 1
         else:
             tab_count = 2
 
