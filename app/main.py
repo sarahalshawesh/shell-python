@@ -149,7 +149,7 @@ def shell_completer(text, state):
             pass
 
         last_prefix = text
-    if len(cached_matches) > 1:
+    if len(cached_matches) == 1:
         return None
     
     return None
