@@ -128,12 +128,16 @@ def shell_completer(text, state):
                 matches.append(cmd.name)
         
         cached_matches = sorted(matches)
+        printed_list = False
 
-        if len(cached_matches) == 1:
+    if len(cached_matches) == 1:
+        if state == 0:
             last_prefix = text
             tab_count = 0
             return cached_matches[0] + " "
-        
+        return None
+    
+    if state == 0:
         if text != last_prefix:
             tab_count = 1
         elif tab_count < 2:
@@ -153,10 +157,8 @@ def shell_completer(text, state):
             pass
 
         last_prefix = text
-    if len(cached_matches) == 1:
-        return cached_matches[0] + " "
-    else:
-        return cached_matches[state] if state < len(cached_matches) else None
+    
+    return cached_matches[state] if state < len(cached_matches) else None
 
 
 tab_count = 0
