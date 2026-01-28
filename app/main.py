@@ -139,7 +139,7 @@ def shell_completer(text, state):
         if len(cached_matches) > 1:
             tab_count += 1
             if tab_count == 1:
-                print("\x07", end="", flush=True)
+                print("\x07")
             elif tab_count == 2 and not printed_list:
                 printed_list = True
                 print("  ".join(cached_matches))
