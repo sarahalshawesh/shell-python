@@ -113,7 +113,6 @@ def handle_external_cmds(user_input, command):
 
 
 def shell_completer(text, state):
-    global tab_count, last_prefix, cached_matches, printed_list
     
     if state == 0:
         matches = []
@@ -134,7 +133,7 @@ def shell_completer(text, state):
             
 
     
-    return shell_completer.matches[state] + " " if state < len(cached_matches) else None
+    return shell_completer.matches[state] + " " if state < len(shell_completer.matches) else None
 
 
 shell_completer.matches = []
