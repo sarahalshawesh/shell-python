@@ -137,7 +137,7 @@ def shell_completer(text, state):
     return shell_completer.matches[state] + " " if state < len(cached_matches) else None
 
 
-
+shell_completer.matches = []
 readline.parse_and_bind("tab: complete")
 readline.set_completer(shell_completer)
 
