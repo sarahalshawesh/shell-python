@@ -130,7 +130,7 @@ def shell_completer(text, state):
         
         cached_matches = sorted(matches)
         if len(cached_matches) == 1:
-            return cached_matches[state] if state < 1 else None
+            return cached_matches[state] if state == 0 else None
        
         if text != last_prefix:
             tab_count = 0
