@@ -120,7 +120,7 @@ def shell_completer(text, state):
 
         for cmd in commands:
             if cmd.startswith(text):
-                matches.append(cmd + " ")
+                matches.append(cmd)
      
         for dir in os.environ.get("PATH").split(":"):
             paths = sorted(Path(dir).glob(f"{text}*"))
@@ -128,34 +128,16 @@ def shell_completer(text, state):
             for cmd in external_commands:
                 matches.append(cmd.name + " ")
         
-        cached_matches = sorted(matches)
-        if len(cached_matches) == 1:
-            return cached_matches[state] if state == 0 else None
-       
-        if text != last_prefix:
-            tab_count = 0
-            printed_list = False
-
-        
-        if len(cached_matches) > 1:
-            tab_count += 1
-            if tab_count == 1:
+        shell_completer.matches = sorted(matches)
+        if len(shell_completer.matches) > 1:
                 print("\x07")
-            elif tab_count == 2 and not printed_list:
-                printed_list = True
-                print(" ".join(cached_matches))
-                print(f"$ {text}")
-
-        last_prefix = text
+            
 
     
-    return cached_matches[state] if state < len(cached_matches) else None
+    return shell_completer.matches[state] + " " if state < len(cached_matches) else None
 
 
-tab_count = 0
-last_prefix = ""
-cached_matches = []
-printed_list = False
+
 readline.parse_and_bind("tab: complete")
 readline.set_completer(shell_completer)
 
