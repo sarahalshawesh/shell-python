@@ -112,30 +112,68 @@ def handle_external_cmds(user_input, command):
         print(f"{command}: command not found")
 
 
+last_tab_prefix = ""
+last_tab_count = 0
+
 def shell_completer(text, state):
-    
-    if state == 0:
-        matches = []
+    global last_tab_prefix, last_tab_count
 
-        for cmd in commands:
-            if cmd.startswith(text):
-                matches.append(cmd)
-     
-        for dir in os.environ.get("PATH").split(":"):
-            paths = sorted(Path(dir).glob(f"{text}*"))
-            external_commands = list(filter(lambda x: os.access(x, os.X_OK),  paths))
-            for cmd in external_commands:
-                matches.append(cmd.name)
-        
-        shell_completer.matches = sorted(matches)
+    # readline calls completer multiple times with increasing state
+    if state != 0:
+        return None
 
-        if len(shell_completer.matches) > 1:
-            print("\x07")
-            
+    matches = []
 
-    
-    return shell_completer.matches[state] if state < len(shell_completer.matches) else None
+    # builtins
+    for cmd in commands:
+        if cmd.startswith(text):
+            matches.append(cmd)
 
+    # PATH executables
+    for dir in os.environ.get("PATH", "").split(":"):
+        try:
+            for entry in os.scandir(dir):
+                if not entry.name.startswith(text):
+                    continue
+                if entry.is_file() and os.access(entry.path, os.X_OK):
+                    matches.append(entry.name)
+        except FileNotFoundError:
+            continue
+
+    matches = sorted(set(matches))
+
+    # ---- no matches ----
+    if not matches:
+        print("\x07", end="", flush=True)
+        last_tab_prefix = ""
+        last_tab_count = 0
+        return None
+
+    # ---- single match ----
+    if len(matches) == 1:
+        suffix = matches[0][len(text):] + " "
+        last_tab_prefix = ""
+        last_tab_count = 0
+        return suffix
+
+    # ---- multiple matches ----
+    if last_tab_prefix != text:
+        last_tab_prefix = text
+        last_tab_count = 1
+        print("\x07", end="", flush=True)
+        return None
+
+    last_tab_count += 1
+
+    if last_tab_count == 2:
+        print("\n" + "  ".join(matches))
+        print(f"$ {text}", end="", flush=True)
+        last_tab_prefix = ""
+        last_tab_count = 0
+        return None
+
+    print("\x07", end="", flush=True)
+    return None
 
 shell_completer.matches = []
 readline.parse_and_bind("tab: complete")
