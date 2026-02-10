@@ -134,7 +134,7 @@ def shell_completer(text, state):
             
 
     
-    return shell_completer.matches[state] + " " if state < len(shell_completer.matches) else None
+    return shell_completer.matches[state] + "" if state < len(shell_completer.matches) else None
 
 
 shell_completer.matches = []
