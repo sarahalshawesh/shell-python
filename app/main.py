@@ -130,7 +130,7 @@ def shell_completer(text, state):
         shell_completer.matches = sorted(matches)
 
         if len(shell_completer.matches) > 1:
-                print("\x07")
+            print("\x07")
             
 
     
