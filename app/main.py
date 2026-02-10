@@ -151,10 +151,8 @@ def shell_completer(text, state):
 
     # ---- single match ----
     if len(matches) == 1:
-        suffix = matches[0][len(text):] + " "
-        last_tab_prefix = ""
-        last_tab_count = 0
-        return suffix
+        return matches[0] + " "
+
 
     # ---- multiple matches ----
     if last_tab_prefix != text:
